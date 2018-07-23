@@ -1,0 +1,124 @@
+<template>
+  <div id="app">
+    <keep-alive><!-- 使用keep-alive可以保存组件的状态，从其他组件返回时会回到离开之前组件的状态 -->
+      <router-view :info="info" @ifshow="showFoot"></router-view>
+    </keep-alive>
+    <transition name="slideDown">
+      <div class="foot-bar" v-if="show">
+        <div class="tab-item" :class="{active:isActive[0]}" @click="change(0)">
+          <router-link to="/emails">
+            <i class="fa icon" :class="isActive[0] ? 'fa-envelope-o':'fa-envelope'" aria-hidden="true"></i>邮件
+          </router-link>
+        </div>
+        <div class="tab-item" :class="{active:isActive[1]}" @click="change(1)">
+          <router-link to="/affair">
+            <i class="fa icon" :class="isActive[1] ? 'fa-check-circle-o':'fa-check-circle'" aria-hidden="true"></i>待办
+          </router-link>
+        </div>
+        <div class="tab-item" :class="{active:isActive[2]}" @click="change(2)">
+          <router-link to="/addresslist">
+            <i class="fa icon" :class="isActive[2] ? 'fa-address-book-o':'fa-address-book'" aria-hidden="true"></i>通讯录
+          </router-link>
+        </div>
+        <div class="tab-item" :class="{active:isActive[3]}" @click="change(3)">
+          <router-link to="/user">
+            <i class="fa icon" :class="isActive[3] ? 'fa-user-o':'fa-user'" aria-hidden="true"></i>我
+          </router-link>
+        </div>
+      </div>
+    </transition>
+  </div>
+</template>
+
+<script>
+import Vue from 'vue'
+import axios from 'axios'
+import Vueaxios from 'vue-axios'
+
+Vue.use(Vueaxios, axios)
+export default {
+  name: 'App',
+  data () {
+    return {
+      isActive: [true, false, false, false],
+      info: {},
+      show: true
+    }
+  },
+  created () {
+    let LocalAPI = 'static/data.json'
+    axios.get(LocalAPI).then((res) => {
+      // data.user的信息赋值给info  再通过组件的数据传递传给sideBar
+      this.info = res.data
+    }, (err) => {
+      alert(err)
+    })
+  },
+  methods: {
+    change (index) {
+      this.isActive[index] = true
+      for (var i = 0; i < this.isActive.length; i++) {
+        if (i !== index) {
+          this.isActive[i] = false
+        }
+      }
+    },
+    showFoot () {
+      this.show = !this.show
+    }
+  },
+  components: {
+
+  }
+}
+</script>
+
+<style>
+#app {
+  width: 100%;
+  height: 100%;
+  margin:0 auto;
+}
+.foot-bar {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  display: flex;
+  z-index: 999;
+  background-color: rgba(232,232,232,0.9)
+}
+.foot-bar::before {
+  display:block;
+  position:absolute;
+  left:0;
+  top:0;
+  width:100%;
+  border-top:1px solid #DCDCDC;
+  content:' ';
+}
+.tab-item {
+  flex:1;
+  text-align:center;
+}
+.tab-item a{
+  display:block;
+  font-size:12px;
+  padding: 5px 0;
+  color:#808080;
+}
+.icon {
+  display: block;
+  color: #808080;
+  margin-bottom: 2px;
+  font-size:18px;
+}
+.tab-item.active a,.tab-item.active .icon{
+  color: #1E90FF;
+}
+.slideDown-enter-active, .slideDown-leave-active {
+    transition: all 0.3s ease;
+  }
+  .slideDown-enter, .slideDown-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    transform: translateY(100%);
+  }
+</style>
