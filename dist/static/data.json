@@ -193,6 +193,17 @@
 				"content": "好久不见，最近可好？",
 				"time": "2018-07-17",
 				"readstate": "0"
+			},
+			{
+				"id": "11",
+				"type": "3",
+				"name": "7896456@qq.com",
+				"nickname": "张三",
+				"avatar": "https://mail.163.com/favicon.ico",
+				"title": "new line",
+				"content": "test the pulldown？",
+				"time": "2018-07-17",
+				"readstate": "0"
 			}
 		]
 	},
