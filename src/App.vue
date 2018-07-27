@@ -5,23 +5,23 @@
     </keep-alive>
     <transition name="slideDown">
       <div class="foot-bar" v-if="show">
-        <div class="tab-item" :class="{active:isActive[0]}" @click="change(0)">
+        <div class="tab-item"  @click="change(0)">
           <router-link to="/emails">
             <i class="fa icon" :class="isActive[0] ? 'fa-envelope-o':'fa-envelope'" aria-hidden="true"></i>邮件
           </router-link>
         </div>
-        <div class="tab-item" :class="{active:isActive[1]}" @click="change(1)">
-          <router-link to="/affair">
-            <i class="fa icon" :class="isActive[1] ? 'fa-check-circle-o':'fa-check-circle'" aria-hidden="true"></i>待办
+        <div class="tab-item" @click="change(1)">
+          <router-link to="/calendar">
+            <i class="fa icon" :class="isActive[1] ? 'fa-calendar-check-o':'fa-calendar'" aria-hidden="true"></i>日历
           </router-link>
         </div>
-        <div class="tab-item" :class="{active:isActive[2]}" @click="change(2)">
+        <div class="tab-item" @click="change(2)">
           <router-link to="/addresslist">
             <i class="fa icon" :class="isActive[2] ? 'fa-address-book-o':'fa-address-book'" aria-hidden="true"></i>通讯录
           </router-link>
         </div>
-        <div class="tab-item" :class="{active:isActive[3]}" @click="change(3)">
-          <router-link to="/user">
+        <div class="tab-item"  @click="change(3)">
+          <router-link to="/personel">
             <i class="fa icon" :class="isActive[3] ? 'fa-user-o':'fa-user'" aria-hidden="true"></i>我
           </router-link>
         </div>
@@ -40,7 +40,7 @@ export default {
   name: 'App',
   data () {
     return {
-      isActive: [true, false, false, false],
+      isActive: [false, false, false, false],
       info: {},
       show: true
     }
@@ -112,13 +112,13 @@ export default {
   margin-bottom: 2px;
   font-size:18px;
 }
-.tab-item.active a,.tab-item.active .icon{
+.tab-item a.active,.tab-item a.active .icon{
   color: #1E90FF;
 }
 .slideDown-enter-active, .slideDown-leave-active {
     transition: all 0.3s ease;
   }
-  .slideDown-enter, .slideDown-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.slideDown-enter, .slideDown-leave-to /* .fade-leave-active below version 2.1.8 */ {
     transform: translateY(100%);
-  }
+}
 </style>

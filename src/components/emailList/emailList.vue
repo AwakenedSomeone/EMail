@@ -11,11 +11,6 @@
         </ul>
         <div class="loading-wrapper"></div>
       </scroll>
-   <!--    <div class="listWrapper" ref="listWrapper">
-        <ul class="list">
-          <li v-for="item in emails" :key="item.id"><div class="avatar"><img :src="item.avatar"></div><div class="messages"><p class="name">{{item.nickname}}</p><p class="mailtitle">{{item.title}}</p><p class="word"><span>{{item.content}}</span></p></div><span class="time">{{item.time}}</span></li>
-        </ul>
-      </div> -->
       <div v-if="!emails.length" class="noEmail">暂无邮件</div>
     </div>
 </template>
@@ -43,8 +38,7 @@ export default {
     id: 'getMails'
   },
   methods: {
-    getMails () {
-      console.log(1)
+    getMails (loaded) {
       this.emails = []
       let LocalAPI = 'static/data.json'
       axios.get(LocalAPI).then((res) => {
@@ -60,16 +54,10 @@ export default {
             }
           }
         }
-        // this.$nextTick(() => {
-        //   this._initScroll()
-        // })
       }, (err) => {
         alert(err)
       })
     }
-    // _initScroll () {
-    //   this.listScroll = new BScroll(this.$refs.listWrapper)
-    // }
   },
   created () {
     this.getMails()
@@ -80,7 +68,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet">
+<style rel="stylesheet" scoped>
 .wrapper {
   width: 100%;
   height: 100%;

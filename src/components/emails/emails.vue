@@ -99,7 +99,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet">
+<style rel="stylesheet" scoped>
   .wrap {
     width: 100%;
     height: 100%;
@@ -143,7 +143,7 @@ export default {
   }
   .title .type {
     color: #000;
-    font-size: 13px;
+    font-size: 14px;
   }
   .title .user {
     color: #696969;
@@ -158,6 +158,7 @@ export default {
     padding: 10px;
     color: #696969;
     vertical-align: middle;
+    font-size: 14px;
   }
   .content {
     position: absolute;
