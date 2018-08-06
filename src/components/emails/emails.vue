@@ -2,14 +2,14 @@
   <div class="wrap">
     <div class="head">
       <div class="left">
-        <div class="bars" @click="show = !show;send()"><i class="fa fa-bars icon" aria-hidden="true"></i></div>
+        <div class="bars" @click="show = !show;send()"><i class="icon-bars icon" aria-hidden="true"></i></div>
         <div class="title"><span class="type">{{type}}</span><span class="user">{{info.user.name}}</span></div>
       </div>
       <div class="right">
         <div class="first">
-          <i class="fa fa-filter " aria-hidden="true"></i>
-          <i class="fa fa-search" aria-hidden="true"></i>
-          <i class="fa fa-plus" aria-hidden="true"></i>
+          <i class="icon-filter " aria-hidden="true"></i>
+          <i class="icon-search" aria-hidden="true"></i>
+          <i class="icon-plus" aria-hidden="true"></i>
         </div>
       </div>
     </div>
@@ -22,8 +22,8 @@
       <transition name="slide">
         <div class="left-bars" v-if="show">
           <ul class="items">
-            <li><i class="fa fa-user-circle-o" aria-hidden="true"></i><span>1q1502316689@163.com</span></li>
-            <li><i class="fa fa-plus" aria-hidden="true"></i><span>添加邮箱</span></li>
+            <li><i class="icon-user-circle-o" aria-hidden="true"></i><span>1q1502316689@163.com</span></li>
+            <li><i class="icon-plus" aria-hidden="true"></i><span>添加邮箱</span></li>
           </ul>
           <div class="dividing"></div>
           <ul class="items" id="typelist">
@@ -143,11 +143,11 @@ export default {
   }
   .title .type {
     color: #000;
-    font-size: 14px;
+    font-size: 0.35rem;
   }
   .title .user {
     color: #696969;
-    font-size: 10px;
+    font-size: 0.83rem;
   }
   .right {
     display: flex;
@@ -163,9 +163,9 @@ export default {
   .content {
     position: absolute;
     /*height: 100%;*/
-    top:40px;
+    top:2.5rem;
     width: 100%;
-    bottom: 40px;
+    bottom: 2.5rem;
   }
   .left-wrap {
     position: absolute;
@@ -184,7 +184,7 @@ export default {
   }
   .left-bars {
     position: fixed;
-    top:40px;
+    top:2.5rem;
     left: 0;
     width: 80%;
     height: 100%;

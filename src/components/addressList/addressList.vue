@@ -1,12 +1,13 @@
 <template>
-  <div>
+  <div class="wrap">
     <div class="head">
-      <div class="left"><i class="fa fa-user-plus" aria-hidden="true"></i></div>
+      <div class="left"><i class="icon-user-plus" aria-hidden="true"></i></div>
       <div class="center">通讯录</div>
-      <div class="right"><i class="fa fa-search" aria-hidden="true"></i></div>
+      <div class="right"><i class="icon-search" aria-hidden="true"></i></div>
     </div>
     <div class="content">
-      <yd-cell-group  v-for="item in addresslist" :title="item.letter" :id="item.letter" :ref="item.letter" v-bind:key=item.letter  style="padding: 0;margin: 0">
+      <div class="scrollDiv" id="content">
+        <yd-cell-group  v-for="item in addresslist" :title="item.letter" :id="item.letter" :ref="item.letter" v-bind:key=item.letter  style="padding: 0;margin: 0">
         <yd-cell-item v-for="i in item.data" v-bind:key="i.id" style="padding: 10px 0 10px 5px">
           <img slot="left" :src="i.avatar" width="30" height="30" style="border-radius: 15px" v-if="i.avatar">
           <span class="default" width="30" height="30" v-show="!i.avatar">{{!i.nickname?i.name.slice(0,1):i.nickname.slice(0,1)}}</span>
@@ -21,6 +22,7 @@
         <div class="letterList" v-if="showLetterList">
           <a v-for="item in addresslist"  style="display: block;font-size: 14px;margin-top: 1px" v-bind:key="item.letter"  @click="jumper(item.letter)"><span>{{item.letter}}</span></a>
         </div>
+      </div>
 <!--       <scroll class="wrapper"
           :data="addresslist">
         <ul class="list">
@@ -107,12 +109,20 @@ export default {
 </script>
 
 <style rel="stylesheet" scoped>
+.wrap {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
 .head {
   display: flex;
   width: 100%;
   flex: 1;
   padding: 10px 0;
-  position: relative;
+  position: fixed;
+  top:0;
+  z-index: 200;
+  background: #fff;
 }
 .head::after {
   display:block;
@@ -136,6 +146,13 @@ export default {
 .head .right {
   text-align: right;
   margin-right: 10px;
+}
+.content {
+  position: relative;
+  margin-top: 40px;
+  height: 480px;
+  overflow-y: auto;
+  margin-bottom: 42px;
 }
 .list li{
   padding: 10px 5px;
@@ -190,5 +207,8 @@ export default {
 }
 .yd-cell-item > div {
   margin: 10px;
+}
+.name, .mailtitle{
+  font-size: 18px;
 }
 </style>

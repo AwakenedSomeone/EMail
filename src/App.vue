@@ -7,22 +7,22 @@
       <div class="foot-bar" v-if="show">
         <div class="tab-item"  @click="change(0)">
           <router-link to="/emails">
-            <i class="fa icon" :class="isActive[0] ? 'fa-envelope-o':'fa-envelope'" aria-hidden="true"></i>邮件
+            <i class="fa icon" :class="isActive[0] ? 'icon-envelope-o':'icon-envelope'" aria-hidden="true"></i>邮件
           </router-link>
         </div>
         <div class="tab-item" @click="change(1)">
           <router-link to="/calendar">
-            <i class="fa icon" :class="isActive[1] ? 'fa-calendar-check-o':'fa-calendar'" aria-hidden="true"></i>日历
+            <i class="fa icon" :class="isActive[1] ? 'icon-calendar':'icon-calendar'" aria-hidden="true"></i>日历
           </router-link>
         </div>
         <div class="tab-item" @click="change(2)">
           <router-link to="/addresslist">
-            <i class="fa icon" :class="isActive[2] ? 'fa-address-book-o':'fa-address-book'" aria-hidden="true"></i>通讯录
+            <i class="fa icon" :class="isActive[2] ? 'icon-address-book-o':'icon-address-book'" aria-hidden="true"></i>通讯录
           </router-link>
         </div>
         <div class="tab-item"  @click="change(3)">
           <router-link to="/personel">
-            <i class="fa icon" :class="isActive[3] ? 'fa-user-o':'fa-user'" aria-hidden="true"></i>我
+            <i class="fa icon" :class="isActive[3] ? 'icon-user-o':'icon-user'" aria-hidden="true"></i>我
           </router-link>
         </div>
       </div>
@@ -102,7 +102,7 @@ export default {
 }
 .tab-item a{
   display:block;
-  font-size:12px;
+  font-size:0.75rem;
   padding: 5px 0;
   color:#808080;
 }
@@ -110,7 +110,7 @@ export default {
   display: block;
   color: #808080;
   margin-bottom: 2px;
-  font-size:18px;
+  font-size:1.125rem;
 }
 .tab-item a.active,.tab-item a.active .icon{
   color: #1E90FF;

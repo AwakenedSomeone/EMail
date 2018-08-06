@@ -2,42 +2,42 @@
 	"type": [
 		{
 			"id": "0",
-			"iconClass": "fa-envelope-o",
+			"iconClass": "icon-envelope-o",
 			"text": "收件箱"
 		},
 		{
 			"id": "1",
-			"iconClass": "fa-flag-o",
+			"iconClass": "icon-flag-o",
 			"text": "红旗邮件"
 		},
 		{
 			"id": "2",
-			"iconClass": "fa-file-text-o",
+			"iconClass": "icon-file-text-o",
 			"text": "草稿箱"
 		},
 		{
 			"id": "3",
-			"iconClass": "fa-paper-plane-o",
+			"iconClass": "icon-paper-plane-o",
 			"text": "已发送"
 		},
 		{
 			"id": "4",
-			"iconClass": "fa-rss",
+			"iconClass": "icon-rss",
 			"text": "订阅邮件"
 		},
 		{
 			"id": "5",
-			"iconClass": "fa-tag",
+			"iconClass": "icon-tag",
 			"text": "广告邮件"
 		},
 		{
 			"id": "6",
-			"iconClass": "fa-minus-square-o",
+			"iconClass": "icon-minus-square-o",
 			"text": "垃圾邮件"
 		},
 		{
 			"id": "7",
-			"iconClass": "fa-trash-o",
+			"iconClass": "icon-trash-o",
 			"text": "已删除"
 		}
 	]
