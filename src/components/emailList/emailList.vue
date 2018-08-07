@@ -70,9 +70,9 @@ export default {
 
 <style rel="stylesheet" scoped>
 .wrapper {
+  position: absolute;
   width: 100%;
   height: 100%;
-  position: absolute;
 }
 .list {
   position: absolute;
@@ -92,16 +92,16 @@ li > div {
 }
 .messages {
   width: 65%;
-  font-size: 12px;
+  font-size: 0.6rem;
   margin: 5px;
-  line-height: 16px;
+  line-height: 0.8rem;
   vertical-align: middle;
 }
 .messages p {
   margin-bottom: 2px;
 }
 .name {
-  font-size: 14px;
+  font-size: 0.7rem;
 }
 .word {
   color: #696969;
@@ -110,7 +110,7 @@ li > div {
   white-space: nowrap;
 }
 .time {
-  font-size: 12px;
+  font-size: 0.6rem;
   width: 20%;
   display: inline-block;
 }

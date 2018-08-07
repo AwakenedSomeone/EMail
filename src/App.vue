@@ -83,6 +83,7 @@ export default {
   position: fixed;
   width: 100%;
   bottom: 0;
+  height: 46px;
   display: flex;
   z-index: 999;
   background-color: rgba(232,232,232,0.9)
@@ -102,7 +103,7 @@ export default {
 }
 .tab-item a{
   display:block;
-  font-size:0.75rem;
+  font-size:0.65rem;
   padding: 5px 0;
   color:#808080;
 }
@@ -110,7 +111,7 @@ export default {
   display: block;
   color: #808080;
   margin-bottom: 2px;
-  font-size:1.125rem;
+  font-size:0.8rem;
 }
 .tab-item a.active,.tab-item a.active .icon{
   color: #1E90FF;

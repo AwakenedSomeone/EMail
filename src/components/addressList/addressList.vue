@@ -1,45 +1,32 @@
 <template>
   <div class="wrap">
-    <div class="head">
-      <div class="left"><i class="icon-user-plus" aria-hidden="true"></i></div>
-      <div class="center">通讯录</div>
-      <div class="right"><i class="icon-search" aria-hidden="true"></i></div>
-    </div>
-    <div class="content">
-      <div class="scrollDiv" id="content">
-        <yd-cell-group  v-for="item in addresslist" :title="item.letter" :id="item.letter" :ref="item.letter" v-bind:key=item.letter  style="padding: 0;margin: 0">
-        <yd-cell-item v-for="i in item.data" v-bind:key="i.id" style="padding: 10px 0 10px 5px">
-          <img slot="left" :src="i.avatar" width="30" height="30" style="border-radius: 15px" v-if="i.avatar">
-          <span class="default" width="30" height="30" v-show="!i.avatar">{{!i.nickname?i.name.slice(0,1):i.nickname.slice(0,1)}}</span>
-          lala
-          <span slot="left" style="margin: 10px">
-            <p class="name">{{i.nickname}}</p>
-            <p class="mailtitle">{{!i.nickname?i.name:''}}</p>
-          </span>
-        </yd-cell-item>
-      </yd-cell-group>
-      <div v-if="showLetter" class="centerLetter"><strong>{{letter}}</strong></div>
-        <div class="letterList" v-if="showLetterList">
-          <a v-for="item in addresslist"  style="display: block;font-size: 14px;margin-top: 1px" v-bind:key="item.letter"  @click="jumper(item.letter)"><span>{{item.letter}}</span></a>
+    <el-container direction='vertical'>
+      <el-header class="head">
+        <div class="left"><i class="icon-user-plus" aria-hidden="true"></i></div>
+        <div class="center">通讯录</div>
+        <div class="right"><i class="el-icon-search" aria-hidden="true"></i></div>
+      </el-header>
+      <el-main>
+        <div class="content">
+          <div class="scrollDiv" id="content">
+            <yd-cell-group  v-for="item in addresslist" :title="item.letter" :id="item.letter" :ref="item.letter" v-bind:key=item.letter  style="padding: 0;margin: 0">
+              <yd-cell-item v-for="i in item.data" v-bind:key="i.id" style="padding: 10px 0 10px 5px">
+                <img slot="left" :src="i.avatar" width="30" height="30" style="border-radius: 15px" v-if="i.avatar">
+                <span slot="left" class="default" width="30" height="30" v-show="!i.avatar">{{!i.nickname?i.name.slice(0,1):i.nickname.slice(0,1)}}</span>
+                <span slot="left" style="margin: 10px">
+                  <p class="name">{{i.nickname}}</p>
+                  <p class="mailtitle">{{!i.nickname?i.name:''}}</p>
+                </span>
+              </yd-cell-item>
+            </yd-cell-group>
+            <div v-if="showLetter" class="centerLetter"><strong>{{letter}}</strong></div>
+            <div class="letterList" v-if="showLetterList">
+              <a v-for="item in addresslist"  style="display: block;font-size: 14px;margin-top: 1px" v-bind:key="item.letter"  @click="jumper(item.letter)"><span>{{item.letter}}</span></a>
+            </div>
+          </div>
         </div>
-      </div>
-<!--       <scroll class="wrapper"
-          :data="addresslist">
-        <ul class="list">
-          <li v-for="item in addresslist" :key="item.id">
-            <div class="avatar">
-              <img :src="item.avatar" v-show="item.avatar">
-              <div class="default" :style="{color:'rgb('+Math.floor(Math.random() * 256+100)+','+Math.floor(Math.random() * 160)+','+Math.floor(Math.random() * 256+100)+')'}" v-show="!item.avatar">{{item.nickname.slice(0,1)}}</div>
-            </div>
-            <div class="messages">
-              <p class="name">{{item.nickname}}</p>
-              <p class="mailtitle">{{!item.nickname?item.name:''}}</p>
-            </div>
-          </li>
-        </ul>
-        <div class="loading-wrapper"></div>
-      </scroll> -->
-    </div>
+      </el-main>
+  </el-container>
   </div>
 </template>
 
@@ -49,8 +36,9 @@ import axios from 'axios'
 import Vueaxios from 'vue-axios'
 import scroll from '../scroll'
 import util from './util.js'
-
+import {Container} from 'element-ui'
 Vue.use(Vueaxios, axios)
+Vue.use(Container)
 export default {
   data () {
     return {
@@ -94,7 +82,6 @@ export default {
         var el = document.getElementById(key)
         if (el) {
           var scrollPosition = el.offsetTop
-          console.log('scrollPosition', scrollPosition)
           $('#content').animate({
             scrollTop: scrollPosition
           }, 100)
@@ -111,15 +98,16 @@ export default {
 <style rel="stylesheet" scoped>
 .wrap {
   width: 100%;
-  height: 100%;
-  position: relative;
+  position: absolute;
+  top: 0;
+  bottom: 46px;
 }
 .head {
   display: flex;
   width: 100%;
   flex: 1;
   padding: 10px 0;
-  position: fixed;
+  position: sticky;
   top:0;
   z-index: 200;
   background: #fff;
@@ -137,7 +125,7 @@ export default {
   flex: 1;
   text-align: center;
   color: #696969;
-  font-size: 18px;
+  font-size: 0.8rem;
 }
 .head .left {
   text-align: left;
@@ -148,11 +136,14 @@ export default {
   margin-right: 10px;
 }
 .content {
-  position: relative;
-  margin-top: 40px;
-  height: 480px;
+  position: absolute;
+  width: 100%;
   overflow-y: auto;
-  margin-bottom: 42px;
+  top: 42px;
+  bottom: 0;
+}
+.scrollDiv {
+  width: 100%;
 }
 .list li{
   padding: 10px 5px;
@@ -209,6 +200,6 @@ export default {
   margin: 10px;
 }
 .name, .mailtitle{
-  font-size: 18px;
+  font-size: 0.6rem;
 }
 </style>

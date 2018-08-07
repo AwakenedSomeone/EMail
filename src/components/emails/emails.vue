@@ -27,7 +27,7 @@
           </ul>
           <div class="dividing"></div>
           <ul class="items" id="typelist">
-            <li @click="check($event,item.id);show = !show;send()"  v-for="(item, index) in typelist" :key="item.id" :class="checked == index? 'active':''"><i class="fa" :class="item.iconClass" ></i><span >{{item.text}}</span></li>
+            <li @click="check($event,item.id);show = !show;send()"  v-for="(item, index) in typelist" :key="item.id" :class="checked == index? 'active':''"><i :class="item.iconClass" ></i><span >{{item.text}}</span></li>
           </ul>
         </div>
       </transition>
@@ -103,12 +103,15 @@ export default {
   .wrap {
     width: 100%;
     height: 100%;
-    position: relative;
+    position: absolute;
+    top: 0;
+    bottom: 46px;
   }
   .head {
     display: flex;
     width: 100%;
     position: fixed;
+    height: 42px;
     background-color: #fff;
     z-index: 999;
   }
@@ -143,11 +146,11 @@ export default {
   }
   .title .type {
     color: #000;
-    font-size: 0.35rem;
+    font-size: 0.6rem;
   }
   .title .user {
     color: #696969;
-    font-size: 0.83rem;
+    font-size: 0.6rem;
   }
   .right {
     display: flex;
@@ -158,14 +161,14 @@ export default {
     padding: 10px;
     color: #696969;
     vertical-align: middle;
-    font-size: 14px;
+    font-size: 0.77rem;
   }
   .content {
     position: absolute;
     /*height: 100%;*/
-    top:2.5rem;
+    top:42px;
     width: 100%;
-    bottom: 2.5rem;
+    bottom: 46px;
   }
   .left-wrap {
     position: absolute;
@@ -184,7 +187,7 @@ export default {
   }
   .left-bars {
     position: fixed;
-    top:2.5rem;
+    top:1.9rem;
     left: 0;
     width: 80%;
     height: 100%;
@@ -224,15 +227,16 @@ export default {
     margin-right: 5%;
     margin-left: 2%;
     color: #696969;
+    font-size: 0.6rem;
   }
   .items li span {
     display: inline-block;
     width: 70%;
-    font-size: 14px;
+    font-size: 0.6rem;
   }
   .dividing {
     width: 100%;
-    height: 10px;
+    height: 0.43rem;
     background-color: #EAEAEA;
   }
   .slide-enter-active, .slide-leave-active {
