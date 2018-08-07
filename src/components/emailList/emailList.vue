@@ -7,7 +7,16 @@
           :pullup="pullup"
           @pullup="getMails">
         <ul class="list">
-          <li v-for="item in emails" :key="item.id"><div class="avatar"><img :src="item.avatar"></div><div class="messages"><p class="name">{{item.nickname}}</p><p class="mailtitle">{{item.title}}</p><p class="word"><span>{{item.content}}</span></p></div><span class="time">{{item.time}}</span></li>
+          <li v-for="item in emails" :key="item.id" @click="showDetail(item)">
+            <div class="avatar">
+              <img :src="item.avatar">
+            </div>
+            <div class="messages">
+              <p class="name">{{item.nickname}}</p>
+              <p class="mailtitle">{{item.title}}</p>
+              <p class="word"><span class="text">{{item.content}}</span> <span class="time">{{item.time}}</span></p>
+            </div>
+          </li>
         </ul>
         <div class="loading-wrapper"></div>
       </scroll>
@@ -19,7 +28,6 @@
 import Vue from 'vue'
 import axios from 'axios'
 import Vueaxios from 'vue-axios'
-// import BScroll from 'better-scroll'
 import scroll from '../scroll'
 
 Vue.use(Vueaxios, axios)
@@ -87,13 +95,13 @@ li > div {
 }
 .avatar {
   width: 10%;
-  margin-left: 5px;
+  margin:0 5px;
   vertical-align: middle;
 }
 .messages {
-  width: 65%;
+  width: 85%;
   font-size: 0.6rem;
-  margin: 5px;
+  margin: 5px 0;
   line-height: 0.8rem;
   vertical-align: middle;
 }
@@ -105,14 +113,19 @@ li > div {
 }
 .word {
   color: #696969;
+  overflow: hidden;
+}
+.text {
+  display: inline-block;
+  width: 75%;
   text-overflow:ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
 .time {
   font-size: 0.6rem;
-  width: 20%;
   display: inline-block;
+  float: right;
 }
 .noEmail {
   position: absolute;

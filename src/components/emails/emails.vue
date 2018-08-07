@@ -187,7 +187,7 @@ export default {
   }
   .left-bars {
     position: fixed;
-    top:1.9rem;
+    top:41px;
     left: 0;
     width: 80%;
     height: 100%;

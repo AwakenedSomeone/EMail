@@ -56,7 +56,6 @@ export default {
     axios.get(LocalAPI).then((res) => {
       // this.addresslist = res.data.addresslist
       this.addresslist = util.pySort(res.data.addresslist)
-      console.log(this.addresslist)
     }, (err) => {
       alert(err)
     })
