@@ -3,20 +3,20 @@
     <el-container direction='vertical'>
       <el-header class="head">
         <div class="left"><i class="icon-user-plus" aria-hidden="true"></i></div>
-        <div class="center">通讯录</div>
+        <div class="center" >通讯录</div>
         <div class="right"><i class="el-icon-search" aria-hidden="true"></i></div>
       </el-header>
       <el-main>
         <div class="content">
           <div class="scrollDiv" id="content">
-            <yd-cell-group  v-for="item in addresslist" :title="item.letter" :id="item.letter" :ref="item.letter" v-bind:key=item.letter  style="padding: 0;margin: 0">
-              <yd-cell-item v-for="i in item.data" v-bind:key="i.id" style="padding: 10px 0 10px 5px">
+            <yd-cell-group  v-for="item in addresslist" :title="item.letter" :id="item.letter" :ref="item.letter" v-bind:key=item.letter  style="padding: 0;margin: 0" >
+              <yd-cell-item v-for="i in item.data" v-bind:key="i.id" style="padding: 10px 0 10px 5px" >
                 <img slot="left" :src="i.avatar" width="30" height="30" style="border-radius: 15px" v-if="i.avatar">
                 <span slot="left" class="default" width="30" height="30" v-show="!i.avatar">{{!i.nickname?i.name.slice(0,1):i.nickname.slice(0,1)}}</span>
-                <span slot="left" style="margin: 10px">
+                <div slot="left" style="margin: 10px;justify-content: flex-start;" @click="sendToParent(i, item.letter)">
                   <p class="name">{{i.nickname}}</p>
                   <p class="mailtitle">{{!i.nickname?i.name:''}}</p>
-                </span>
+                </div>
               </yd-cell-item>
             </yd-cell-group>
             <div v-if="showLetter" class="centerLetter"><strong>{{letter}}</strong></div>
@@ -37,6 +37,8 @@ import Vueaxios from 'vue-axios'
 import scroll from '../scroll'
 import util from './util.js'
 import {Container} from 'element-ui'
+import Details from '../details/details'
+
 Vue.use(Vueaxios, axios)
 Vue.use(Container)
 export default {
@@ -86,10 +88,14 @@ export default {
           }, 100)
         }
       }
+    },
+    sendToParent (item) {
+      this.$emit('showAddress', item)
     }
   },
   components: {
-    'scroll': scroll
+    'scroll': scroll,
+    'Details': Details
   }
 }
 </script>

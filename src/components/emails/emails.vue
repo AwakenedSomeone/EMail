@@ -32,7 +32,7 @@
         </div>
       </transition>
       <keep-alive>
-        <emailList :id="getId"></emailList>
+        <emailList :id="getId" @showDetails="get"></emailList>
       </keep-alive>
     </div>
   </div>
@@ -94,6 +94,9 @@ export default {
     },
     send () {
       this.$emit('ifshow')
+    },
+    get (item) {
+      this.$emit('showDetails', item)
     }
   }
 }

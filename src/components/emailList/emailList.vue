@@ -1,13 +1,13 @@
 <template>
-    <div >
+    <div class="out">
       <scroll class="wrapper"
           :data="emails"
           :pulldown="pulldown"
           @pulldown="getMails"
           :pullup="pullup"
-          @pullup="getMails">
+          @pullup="getMails" @click="console.log(1)">
         <ul class="list">
-          <li v-for="item in emails" :key="item.id" @click="showDetail(item)">
+          <li v-for="item in emails" :key="item.id" @click="send(item)">
             <div class="avatar">
               <img :src="item.avatar">
             </div>
@@ -65,6 +65,9 @@ export default {
       }, (err) => {
         alert(err)
       })
+    },
+    send (item) {
+      this.$emit('showDetails', item)
     }
   },
   created () {
@@ -77,14 +80,18 @@ export default {
 </script>
 
 <style rel="stylesheet" scoped>
+.out {
+  width: 100%;
+  height: 100%;
+}
 .wrapper {
   position: absolute;
   width: 100%;
   height: 100%;
+
 }
 .list {
   position: absolute;
-  z-index: -1;
   width: 100%;
 }
 .list li {

@@ -42,6 +42,9 @@
 .icon-tag:before {
   content: "\f02b";
 }
+.icon-chevron-left:before {
+  content: "\f053";
+}
 .icon-calendar:before {
   content: "\f073";
 }
@@ -95,4 +98,7 @@
 }
 .icon-user-o:before {
   content: "\f2c0";
+}
+.icon-chevron-left2:before {
+  content: "\e900";
 }
