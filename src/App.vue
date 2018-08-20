@@ -189,6 +189,7 @@ export default {
   bottom: 0;
   background-color: #fff;
   z-index: 999;
+  overflow: hidden;
 }
 .slideLeft-enter-active, .slideLeft-leave-active {
     transition: all 0.4s ease-in-out;
@@ -197,7 +198,6 @@ export default {
     transform: translateX(100%);
 }
 .title {
-  margin-left: 15px;
   font-size: 0.75rem;
 }
 .sender {
@@ -227,6 +227,7 @@ export default {
   justify-content: flex-end;
   line-height: 40px;
   border-top: 1px solid #ccc;
+  font-size: 0.65rem;
 }
 .item_left {
   flex: 1;

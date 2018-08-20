@@ -97,13 +97,10 @@ export default {
 .list li {
   border-bottom: 1px solid #dcdcdc;
 }
-li > div {
-  display: inline-block;
-}
 .avatar {
   width: 10%;
-  margin:0 5px;
-  vertical-align: middle;
+  margin:5px 5px 0 5px;
+  vertical-align: bottom;
 }
 .messages {
   width: 85%;
@@ -111,6 +108,7 @@ li > div {
   margin: 5px 0;
   line-height: 0.8rem;
   vertical-align: middle;
+  overflow: hidden;
 }
 .messages p {
   margin-bottom: 2px;
