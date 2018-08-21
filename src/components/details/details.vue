@@ -61,4 +61,12 @@ export default {
   -webkit-transform: rotate(-45deg) translateY(-50%);
           transform: rotate(-45deg) translateY(-50%);
 }
+.headright {
+/*  flex: 1;*/
+  display: flex;
+  padding: 10px;
+  font-size: 0.7rem;
+  width: 100%;
+  justify-content: flex-end;
+}
 </style>

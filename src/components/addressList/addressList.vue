@@ -7,13 +7,13 @@
         <div class="right"><i class="el-icon-search" aria-hidden="true"></i></div>
       </el-header>
       <el-main>
-        <div class="content">
-          <div class="scrollDiv" id="content">
+        <div class="content" id="content">
+          <div class="scrollDiv" >
             <yd-cell-group  v-for="item in addresslist" :title="item.letter" :id="item.letter" :ref="item.letter" v-bind:key=item.letter  style="padding: 0;margin: 0" >
-              <yd-cell-item v-for="i in item.data" v-bind:key="i.id" style="padding: 10px 0 10px 5px" >
+              <yd-cell-item v-for="i in item.data" v-bind:key="i.id"  style="padding: 10px 0 10px 5px" >
                 <img slot="left" :src="i.avatar" width="30" height="30" style="border-radius: 15px" v-if="i.avatar">
                 <span slot="left" class="default" width="30" height="30" v-show="!i.avatar">{{!i.nickname?i.name.slice(0,1):i.nickname.slice(0,1)}}</span>
-                <div slot="left" style="margin: 10px;justify-content: flex-start;" @click="sendToParent(i, item.letter)">
+                <div slot="left" style="margin: 10px;justify-content: flex-start;width: 10rem;" @click="sendToParent(i, item.letter)">
                   <p class="name">{{i.nickname}}</p>
                   <p class="mailtitle">{{!i.nickname?i.name:''}}</p>
                 </div>
@@ -70,19 +70,10 @@ export default {
         }, 100)
       } else {
         this.letter = key
-        var _this = this
-        // 点击侧边字母后屏幕中间的字母也显示,500毫秒隐藏
-        if (this.showLetter === false) {
-          this.showLetter = true
-          setTimeout(function () {
-            _this.showLetter = false
-          }, 500)
-        } else {
-          this.showLetter = false
-        }
         var el = document.getElementById(key)
         if (el) {
           var scrollPosition = el.offsetTop
+          console.log(scrollPosition)
           $('#content').animate({
             scrollTop: scrollPosition
           }, 100)
@@ -186,6 +177,7 @@ export default {
   border: 1px solid #ccc;
   text-align: center;
   line-height: 32px;
+  font-size: 0.6rem;
 }
 .messages {
   display: inline-block;
@@ -205,6 +197,6 @@ export default {
   margin: 10px;
 }
 .name, .mailtitle{
-  font-size: 0.6rem;
+  font-size: 0.75rem;
 }
 </style>
