@@ -2,7 +2,7 @@
   <div class="wrap">
     <el-container direction='vertical'>
       <el-header class="head">
-        <div class="left"><i class="icon-user-plus" aria-hidden="true"></i></div>
+        <div class="left"><i class="icon-user-plus" aria-hidden="true" @click="hidefoot"></i></div>
         <div class="center" >通讯录</div>
         <div class="right"><i class="el-icon-search" aria-hidden="true"></i></div>
       </el-header>
@@ -26,7 +26,10 @@
           </div>
         </div>
       </el-main>
-  </el-container>
+    </el-container>
+    <transition name="slide">
+      <editAddress  :item="addresslist" :flag="true" ref="edit"  class="details" @ifshow="showFoot" @save="addList"></editAddress>
+    </transition>
   </div>
 </template>
 
@@ -38,6 +41,7 @@ import scroll from '../scroll'
 import util from './util.js'
 import {Container} from 'element-ui'
 import Details from '../details/details'
+import editAddress from '../editAddress/editAddress'
 
 Vue.use(Vueaxios, axios)
 Vue.use(Container)
@@ -82,11 +86,22 @@ export default {
     },
     sendToParent (item) {
       this.$emit('showAddress', item)
+    },
+    hidefoot () {
+      this.$refs.edit.show()
+      this.$emit('ifshow')
+    },
+    showFoot () {
+      this.$emit('ifshow')
+    },
+    addList (item) {
+      console.log(item)
     }
   },
   components: {
     'scroll': scroll,
-    'Details': Details
+    'Details': Details,
+    'editAddress': editAddress
   }
 }
 </script>

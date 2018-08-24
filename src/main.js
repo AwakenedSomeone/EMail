@@ -15,5 +15,8 @@ new Vue({
   el: '#app',
   router,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  data: {
+    eventHub: new Vue() // 事件分发接口，初始化后所有组件可用
+  }
 })

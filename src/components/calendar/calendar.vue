@@ -32,7 +32,11 @@ export default {
           contentStyle: {
             color: '#fafafa'
           },
-          dates: new Date()
+          dates: new Date(),
+          popover: {
+            label: 'Today is your birthday'
+          },
+          showLinkedButtons: true
         }
       ]
     }

@@ -1,11 +1,11 @@
 <template>
-  <div class="edit">
+  <div class="edit" v-show="showFlag">
     <div class="head">
       <div class="item" @click="back">取消</div>
       <div class="item enable" @click="save">保存</div>
     </div>
     <div class="table">
-      <el-form :label-position="labelPosition"  inline=true :model="formLabelAlign">
+      <el-form :label-position="labelPosition"  :inline='true' :model="formLabelAlign">
         <el-form-item label="联系人名称">
           <el-input v-model="formLabelAlign.nickname" clearable></el-input>
         </el-form-item>
@@ -35,27 +35,46 @@
 <script>
 import Vue from 'vue'
 import {Form, FormItem, Input, Icon} from 'element-ui'
+
 Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Input, Icon)
 export default {
   props: {
-    item: {}
+    item: {},
+    flag: false
   },
   data () {
     return {
       labelPosition: 'left',
       formLabelAlign: Object.assign({}, this.item),
-      oldItem: Object.assign({}, this.item)
+      oldItem: Object.assign({}, this.item),
+      showFlag: false
     }
+  },
+  created () {
+    this.showFlag = false
   },
   methods: {
     back () {
+      if (this.flag) {
+        this.$emit('ifshow')
+      }
       this.formLabelAlign = this.oldItem
-      this.$emit('close')
+      this.showFlag = false
     },
     save () {
-      this.$emit('close', this.formLabelAlign)
+      this.showFlag = false
+      if (this.flag) {
+        this.$emit('ifshow')
+      }
+      this.$emit('save', this.formLabelAlign)
+    },
+    show () {
+      console.log('show')
+      this.showFlag = true
+      this.formLabelAlign = Object.assign({}, this.item)
+      this.oldItem = Object.assign({}, this.item)
     }
   }
 }
@@ -66,6 +85,7 @@ export default {
   color: #000;
   height: 100%;
   background: #fff;
+  z-index: 9999;
 }
 .head {
   width: 100%;

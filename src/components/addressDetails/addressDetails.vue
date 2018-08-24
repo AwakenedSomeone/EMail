@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Details  class="details" @back="backforaddress" v-show="!showEdit">
+    <Details  @back="backforaddress" >
       <div slot="headright" class="headright" @click="show">编辑</div>
       <div slot="content">
         <div class="addressAvatar">
@@ -9,7 +9,7 @@
         </div>
          <div class="text_center">
            <p>{{addressitem.nickname?addressitem.nickname:addressitem.name}}</p>
-           <p v-if="otherItem.company" class="othermsg">{{addressitem.company}}</p>
+           <p v-if="otherItem.company" class="othermsg">{{otherItem.company}}</p>
            <p class="othermsg">
              <span v-if="otherItem.department">{{otherItem.department}}</span>
              <span v-if="otherItem.position">{{otherItem.position}}</span>
@@ -24,7 +24,7 @@
     </Details>
     <transition name="slide">
       <keep-alive>
-        <editAddress v-if='showEdit' @close="showedit" :item="addressitem"></editAddress>
+        <editAddress  :item="addressitem" ref="edit" @save="showedit" class="details"></editAddress>
       </keep-alive>
     </transition>
   </div>
@@ -59,7 +59,7 @@ export default {
       this.$emit('back')
     },
     show () {
-      this.showEdit = !this.showEdit
+      this.$refs.edit.show()
     },
     showedit (data) {
       if (data) {
@@ -71,7 +71,6 @@ export default {
           this.addressitem.nickname = data.nickname
         }
       }
-      this.showEdit = !this.showEdit
     }
   },
   components: {
