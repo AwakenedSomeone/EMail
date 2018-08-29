@@ -102,7 +102,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" rel="stylesheet/less">
 #app {
   width: 100%;
   height: 100%;
@@ -116,27 +116,28 @@ export default {
   height: 46px;
   display: flex;
   z-index: 999;
-  background-color: rgba(232,232,232,0.9)
-}
-.foot-bar::before {
-  display:block;
-  position:absolute;
-  left:0;
-  top:0;
-  width:100%;
-  border-top:1px solid #DCDCDC;
-  content:' ';
+  background-color: rgba(232,232,232,0.9);
+  &::before {
+    display:block;
+    position:absolute;
+    left:0;
+    top:0;
+    width:100%;
+    border-top:1px solid #DCDCDC;
+    content:' ';
+  }
 }
 .tab-item {
   flex:1;
   text-align:center;
+  a {
+    display:block;
+    font-size:0.65rem;
+    padding: 5px 0;
+    color:#808080;
+  }
 }
-.tab-item a{
-  display:block;
-  font-size:0.65rem;
-  padding: 5px 0;
-  color:#808080;
-}
+
 .icon {
   display: block;
   color: #808080;

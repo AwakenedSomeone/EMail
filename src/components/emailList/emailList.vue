@@ -29,6 +29,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import Vueaxios from 'vue-axios'
 import scroll from '../scroll'
+import store from '../vuex/store.js'
 
 Vue.use(Vueaxios, axios)
 export default {
@@ -45,6 +46,7 @@ export default {
   watch: {
     id: 'getMails'
   },
+  store,
   methods: {
     getMails (loaded) {
       this.emails = []
@@ -52,6 +54,8 @@ export default {
       axios.get(LocalAPI).then((res) => {
         if (this.id === '0') {
           this.emails = res.data.email.recept
+          this.$store.commit('receptList', res.data.email.recept)
+          // console.log(this.$store.state.receptList)
         } else if (this.id === '3') {
           this.emails = res.data.email.send
         } else {

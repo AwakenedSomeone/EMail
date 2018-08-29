@@ -42,6 +42,7 @@ import util from './util.js'
 import {Container} from 'element-ui'
 import Details from '../details/details'
 import editAddress from '../editAddress/editAddress'
+import store from '../vuex/store.js'
 
 Vue.use(Vueaxios, axios)
 Vue.use(Container)
@@ -57,16 +58,27 @@ export default {
       panelShow: false
     }
   },
-  created () {
-    let LocalAPI = 'static/data.json'
-    axios.get(LocalAPI).then((res) => {
-      // this.addresslist = res.data.addresslist
-      this.addresslist = util.pySort(res.data.addresslist)
-    }, (err) => {
-      alert(err)
-    })
+  store,
+  mounted () {
+    var address = this.$store.state.addressList
+    if (address.length > 0) {
+      this.addresslist = address
+    } else {
+      this.requestData()
+    }
   },
   methods: {
+    requestData () {
+      let LocalAPI = 'static/data.json'
+      axios.get(LocalAPI).then((res) => {
+        // this.addresslist = res.data.addresslist
+        this.addresslist = util.pySort(res.data.addresslist)
+        this.$store.commit('addressList', this.addresslist)
+        console.log(this.$store.state.addressList)
+      }, (err) => {
+        alert(err)
+      })
+    },
     jumper (key) {
       if (key === '#') {
         $('#content').animate({
