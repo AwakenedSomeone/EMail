@@ -22,7 +22,10 @@ export default {
             name: arr[j].name,
             avatar: arr[j].avatar,
             nickname: arr[j].nickname,
-            id: arr[j].id
+            id: arr[j].id,
+            company: arr[j].company,
+            department: arr[j].department,
+            position: arr[j].position
           })
         } else if (!isNaN(initial)) {
           if (obj === undefined || !obj[arr[j].name]) {

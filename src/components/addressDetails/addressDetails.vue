@@ -9,17 +9,17 @@
         </div>
          <div class="text_center">
            <p>{{addressitem.nickname?addressitem.nickname:addressitem.name}}</p>
-           <p v-if="otherItem.company" class="othermsg">{{otherItem.company}}</p>
+           <p v-if="addressitem.company" class="othermsg">{{addressitem.company}}</p>
            <p class="othermsg">
-             <span v-if="otherItem.department">{{otherItem.department}}</span>
-             <span v-if="otherItem.position">{{otherItem.position}}</span>
+             <span v-if="addressitem.department">{{addressitem.department}}</span>
+             <span v-if="addressitem.position">{{addressitem.position}}</span>
            </p>
          </div>
         <div class="sendAndReply"><p><i class="el-icon-message icon bg"></i>发邮件</p><p><i class="el-icon-sort icon bg"></i>往来邮件</p></div>
         <div class="address">邮箱：{{addressitem.name}}</div>
         <!-- <div class="address" v-if="otherItem.company">{{otherItem.company}}</div> -->
-        <div class="address" v-if="otherItem.phone">电话：{{otherItem.phone}}</div>
-        <div class="address" v-if="otherItem.local">地址：{{otherItem.local}}</div>
+        <div class="address" v-if="addressitem.phone">电话：{{addressitem.phone}}</div>
+        <div class="address" v-if="addressitem.local">地址：{{addressitem.local}}</div>
       </div>
     </Details>
     <transition name="slide">
@@ -35,6 +35,7 @@ import Vue from 'vue'
 import {Icon} from 'element-ui'
 import Details from '../details/details'
 import editAddress from '../editAddress/editAddress'
+import store from '../vuex/store.js'
 
 Vue.use(Icon)
 export default {
@@ -54,6 +55,7 @@ export default {
   props: {
     item: {}
   },
+  store,
   methods: {
     backforaddress () {
       this.$emit('back')
@@ -62,16 +64,22 @@ export default {
       this.$refs.edit.show()
     },
     showedit (data) {
-      if (data) {
-        this.otherItem = data
-        if (data.name != null) {
-          this.addressitem.name = data.name
-        }
-        if (data.nickname != null) {
-          this.addressitem.nickname = data.nickname
+      this.updateData()
+    },
+    updateData () {
+      var addressitem = this.$store.state.addressList
+      for (var i = 0; i < addressitem.length; i++) {
+        if (addressitem[i].id == this.item.id) {
+          this.addressitem = addressitem[i]
         }
       }
+      if (addressitem > 0) {
+        console.log(1)
+      }
     }
+  },
+  mounted () {
+    this.updateData()
   },
   components: {
     'Details': Details,

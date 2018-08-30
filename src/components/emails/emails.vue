@@ -7,9 +7,18 @@
       </div>
       <div class="right">
         <div class="first">
-          <i class="icon-filter " aria-hidden="true"></i>
+          <!-- <i class="icon-filter " aria-hidden="true"></i> -->
           <i class="icon-search" aria-hidden="true"></i>
-          <i class="icon-plus" aria-hidden="true"></i>
+          <i class="icon-plus" aria-hidden="true" ></i>
+          <mt-popup v-model="popupVisible" position="bottom" popup-transition="popup-fade">
+            <div class="popbox">
+              <ul>
+                <li>写邮件</li>
+                <li>新建代办</li>
+                <li>扫一扫</li>
+              </ul>
+            </div>
+          </mt-popup>
         </div>
       </div>
     </div>
@@ -43,7 +52,9 @@ import Vue from 'vue'
 import axios from 'axios'
 import Vueaxios from 'vue-axios'
 import emailList from '../emailList/emailList'
+import { Popup } from 'mint-ui'
 
+Vue.component(Popup.name, Popup)
 Vue.use(Vueaxios, axios)
 export default {
   props: {
@@ -55,7 +66,8 @@ export default {
       checked: 0,
       typelist: null,
       type: '收件箱',
-      id: '0'
+      id: '0',
+      popupVisible: false
     }
   },
   created () {
@@ -97,12 +109,16 @@ export default {
     },
     get (item) {
       this.$emit('showDetails', item)
+    },
+    showWrite () {
+      this.popupVisible = true
+      this.$root.eventHub.$emit('showcover')
     }
   }
 }
 </script>
 
-<style rel="stylesheet" scoped>
+<style rel="stylesheet" lang="less" scoped>
   .wrap {
     width: 100%;
     height: 100%;
@@ -114,9 +130,9 @@ export default {
     display: flex;
     width: 100%;
     position: fixed;
-    height: 42px;
+    height: 52px;
     background-color: #fff;
-    z-index: 999;
+    z-index: 200;
   }
   .head::after {
     display:block;
@@ -129,7 +145,7 @@ export default {
   }
   .left {
     flex: 1;
-    padding: 8px;
+    padding: 10px;
   }
   .bars {
     margin-right: 5px;
@@ -149,7 +165,7 @@ export default {
   }
   .title .type {
     color: #000;
-    font-size: 0.6rem;
+    font-size: 0.7rem;
   }
   .title .user {
     color: #696969;
@@ -169,7 +185,7 @@ export default {
   .content {
     position: absolute;
     /*height: 100%;*/
-    top:42px;
+    top:52px;
     width: 100%;
     bottom: 46px;
   }
@@ -253,5 +269,14 @@ export default {
   }
   .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
     opacity: 0;
+  }
+  .popbox {
+    padding: 10px;
+    width: 100px;
+    background: #fff;
+    z-index: 1000;
+    li {
+      padding: 5px;
+    }
   }
 </style>

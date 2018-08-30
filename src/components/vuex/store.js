@@ -6,7 +6,8 @@ Vue.use(Vuex)
 var state = {
   addressList: [],
   receptList: [],
-  sendList: []
+  sendList: [],
+  todoList: []
 }
 
 var mutations = {
@@ -18,6 +19,20 @@ var mutations = {
   },
   sendList (state, data) {
     state.sendList = data
+  },
+  setAddressList (state, data) {
+    state.addressList.push(data)
+  },
+  setEditAddressList (state, data) {
+    for (var i = 0; i < state.addressList.length; i++) {
+      console.log(state.addressList[i].id)
+      if (state.addressList[i].id == data.id) {
+        state.addressList[i] = data
+      }
+    }
+  },
+  saveTodoList (state, data) {
+    state.todoList = data;
   }
 }
 

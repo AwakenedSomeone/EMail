@@ -28,7 +28,7 @@
       </el-main>
     </el-container>
     <transition name="slide">
-      <editAddress  :item="addresslist" :flag="true" ref="edit"  class="details" @ifshow="showFoot" @save="addList"></editAddress>
+      <editAddress   :flag="true" ref="edit"  class="details"  @save="addList"></editAddress>
     </transition>
   </div>
 </template>
@@ -60,24 +60,25 @@ export default {
   },
   store,
   mounted () {
-    var address = this.$store.state.addressList
-    if (address.length > 0) {
-      this.addresslist = address
-    } else {
-      this.requestData()
-    }
+    this.initData()
   },
   methods: {
     requestData () {
       let LocalAPI = 'static/data.json'
       axios.get(LocalAPI).then((res) => {
-        // this.addresslist = res.data.addresslist
+        this.$store.commit('addressList', res.data.addresslist)
         this.addresslist = util.pySort(res.data.addresslist)
-        this.$store.commit('addressList', this.addresslist)
-        console.log(this.$store.state.addressList)
       }, (err) => {
         alert(err)
       })
+    },
+    initData () {
+      var address = this.$store.state.addressList
+      if (address.length > 0) {
+        this.addresslist = util.pySort(address)
+      } else {
+        this.requestData()
+      }
     },
     jumper (key) {
       if (key === '#') {
@@ -89,7 +90,6 @@ export default {
         var el = document.getElementById(key)
         if (el) {
           var scrollPosition = el.offsetTop
-          console.log(scrollPosition)
           $('#content').animate({
             scrollTop: scrollPosition
           }, 100)
@@ -103,11 +103,8 @@ export default {
       this.$refs.edit.show()
       this.$emit('ifshow')
     },
-    showFoot () {
-      this.$emit('ifshow')
-    },
     addList (item) {
-      console.log(item)
+      this.initData()
     }
   },
   components: {
@@ -129,7 +126,7 @@ export default {
   display: flex;
   width: 100%;
   flex: 1;
-  padding: 10px 0;
+  padding: 15px 0;
   position: sticky;
   top:0;
   z-index: 200;
@@ -162,7 +159,7 @@ export default {
   position: absolute;
   width: 100%;
   overflow-y: auto;
-  top: 42px;
+  top: 52px;
   bottom: 0;
 }
 .scrollDiv {

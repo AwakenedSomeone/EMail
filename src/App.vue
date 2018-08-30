@@ -11,8 +11,8 @@
           </router-link>
         </div>
         <div class="tab-item" @click="change(1)">
-          <router-link to="/calendar">
-            <i class="icon" :class="isActive[1] ? 'icon-calendar':'icon-calendar'" aria-hidden="true"></i>日历
+          <router-link to="/todo">
+            <i class="icon" :class="isActive[1] ? 'el-icon-edit-outline':'el-icon-edit-outline'" aria-hidden="true"></i>代办
           </router-link>
         </div>
         <div class="tab-item" @click="change(2)">
@@ -56,7 +56,8 @@ export default {
       mailitem: {},
       color: '#DCDCDC',
       showAddress: false,
-      addressitem: {}
+      addressitem: {},
+      showcover: false
     }
   },
   created () {
@@ -95,6 +96,14 @@ export default {
       this.showAddress = false
     }
   },
+  mounted () {
+    this.$root.eventHub.$on('ifshow', () => {
+      this.showFoot()
+    })
+    this.$root.eventHub.$on('showcover', () => {
+      this.showcover = !this.showcover
+    })
+  },
   components: {
     'mailDetails': mailDetails,
     'addressDetails': addressDetails
@@ -115,7 +124,7 @@ export default {
   bottom: 0;
   height: 46px;
   display: flex;
-  z-index: 999;
+  z-index: 200;
   background-color: rgba(232,232,232,0.9);
   &::before {
     display:block;
@@ -174,5 +183,16 @@ export default {
   height: 24px;
   float: left;
   margin: 0 10px 0 10px;
+}
+.bodycover {
+  position: absolute;
+  top: 0;
+  bottom:0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.2);
+  z-index: 201;
 }
 </style>

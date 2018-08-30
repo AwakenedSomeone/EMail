@@ -5,7 +5,8 @@
           :pulldown="pulldown"
           @pulldown="getMails"
           :pullup="pullup"
-          @pullup="getMails" @click="console.log(1)">
+          @pullup="getMails">
+        <div v-if='loading'>下拉加载更多</div>
         <ul class="list">
           <li v-for="item in emails" :key="item.id" @click="send(item)">
             <div class="avatar">
@@ -40,7 +41,8 @@ export default {
     return {
       emails: [],
       pulldown: true,
-      pullup: true
+      pullup: true,
+      loading: false
     }
   },
   watch: {
@@ -49,6 +51,7 @@ export default {
   store,
   methods: {
     getMails (loaded) {
+      this.laoding = true
       this.emails = []
       let LocalAPI = 'static/data.json'
       axios.get(LocalAPI).then((res) => {

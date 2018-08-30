@@ -7,6 +7,7 @@
     <div class="table">
       <el-form :label-position="labelPosition"  :inline='true' :model="formLabelAlign">
         <el-form-item label="联系人名称">
+          <input type="text" hidden=true v-model="formLabelAlign.id">
           <el-input v-model="formLabelAlign.nickname" clearable></el-input>
         </el-form-item>
         <el-form-item label="邮箱">
@@ -35,6 +36,7 @@
 <script>
 import Vue from 'vue'
 import {Form, FormItem, Input, Icon} from 'element-ui'
+import store from '../vuex/store.js'
 
 Vue.use(Form)
 Vue.use(FormItem)
@@ -55,10 +57,11 @@ export default {
   created () {
     this.showFlag = false
   },
+  store,
   methods: {
     back () {
       if (this.flag) {
-        this.$emit('ifshow')
+        this.$root.eventHub.$emit('ifshow')
       }
       this.formLabelAlign = this.oldItem
       this.showFlag = false
@@ -66,7 +69,13 @@ export default {
     save () {
       this.showFlag = false
       if (this.flag) {
-        this.$emit('ifshow')
+        this.$root.eventHub.$emit('ifshow')
+        var id = this.$store.state.addressList.length
+        this.formLabelAlign.id = id
+        console.log(this.formLabelAlign)
+        this.$store.commit('setAddressList', this.formLabelAlign)
+      } else {
+        this.$store.commit('setEditAddressList', this.formLabelAlign)
       }
       this.$emit('save', this.formLabelAlign)
     },
@@ -74,6 +83,7 @@ export default {
       console.log('show')
       this.showFlag = true
       this.formLabelAlign = Object.assign({}, this.item)
+      console.log(this.formLabelAlign)
       this.oldItem = Object.assign({}, this.item)
     }
   }
