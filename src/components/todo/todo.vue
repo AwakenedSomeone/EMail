@@ -1,5 +1,16 @@
 <template>
   <div class="todo">
+    <mt-popup
+  v-model="popupVisible"
+  popup-transition="popup-fade" >
+  <div class="popbox">
+    <p>全部清空已完成项？</p>
+    <p class="yesorno">
+      <span @click="popctrl">取消</span>
+      <span @click="deleteAll">清空</span>
+    </p>
+  </div>
+</mt-popup>
     <div class="cover" v-show="!flag" @click="cancel"></div>
     <div class="header">
       <div class="default" v-show="flag" @click="newTodo">
@@ -7,7 +18,7 @@
       </div>
       <transition >
         <div class="inputbox" v-show="!flag">
-          <div class="input"><input type="text" ref="input" v-model="todo"></div>
+          <div class="input"> <input type="text" v-model="todo" ref="input"/></div>
           <div class="operate">
             <div class="notice"><i class="el-icon-bell"></i><span>添加提醒</span></div>
             <div class="finish_button"><span :class="{change: ifchange}" @click="saveData">完成</span></div>
@@ -22,27 +33,41 @@
       <div class="showdata" v-show="todoList.length">
         <ul>
           <li v-for="(item,key) in todoList" v-bind:key="key" v-if="!item.did">
-            {{item.text}}
+            <mt-cell-swipe
+              :title="item.text"
+              :right="[
+                {
+                    content: '完成',
+                    style: { background: '#ccc', color: '#fff' },
+                    handler:() => finished(key)
+                  },
+                  {
+                    content: '删除',
+                    style: { background: 'red', color: '#fff' },
+                    handler: () => deleted(key)
+                  }
+                ]">
+                </mt-cell-swipe>
           </li>
         </ul>
         <div class="finish">
-          <p><span class="divide">已完成</span><span class="text_right"><i>x</i></span></p>
+          <p><span class="divide">已完成</span><span class="text_right"><i class="el-icon-close delete" @click="popctrl"></i></span></p>
           <ul>
             <li v-for="(item,key) in todoList" v-bind:key="key" v-if="item.did">
-               <mt-cell-swipe
+              <mt-cell-swipe
+                :title="item.text"
                 :right="[
                 {
-                    content: '已完成',
+                    content: '还原',
                     style: { background: '#ccc', color: '#fff' },
-                    handler: () => this.$messagebox('delete')
+                    handler:() => reback(key)
                   },
                   {
-                    content: 'Delete',
+                    content: '删除',
                     style: { background: 'red', color: '#fff' },
-                    handler: () => this.$messagebox('delete')
+                    handler: () => deleted(key)
                   }
                 ]">
-                {{item.text}}
                 </mt-cell-swipe>
             </li>
           </ul>
@@ -58,9 +83,7 @@ import store from '../vuex/store.js'
 import axios from 'axios'
 import Vueaxios from 'vue-axios'
 import {Icon} from 'element-ui'
-import { CellSwipe } from 'mint-ui';
 
-Vue.component(CellSwipe.name, CellSwipe);
 Vue.use(Vueaxios, axios, Icon)
 export default {
   data () {
@@ -68,20 +91,8 @@ export default {
       flag: true,
       todo: '',
       focusStatus: true,
-      todoList: [
-        {
-         did: false,
-         text: '第一件事'
-        },
-        {
-         did: true,
-         text: '第一件事'
-        },
-        {
-         did: false,
-         text: '第一件事'
-        }
-      ]
+      todoList: [],
+      popupVisible: false
     }
   },
   store,
@@ -107,6 +118,39 @@ export default {
     },
     cancel () {
       this.flag = true
+    },
+    deleted (index) {
+       this.todoList.splice(index,1);
+       this.$store.commit('saveTodoList', this.todoList)
+    },
+    finished (index) {
+      for (let i = 0;i < this.todoList.length; i++) {
+        if (i == index) {
+          this.todoList[i].did = true;
+        }
+      }
+      this.$store.commit('saveTodoList', this.todoList)
+    },
+    reback (index) {
+      for (let i = 0;i < this.todoList.length; i++) {
+        if (i == index) {
+          this.todoList[i].did = false;
+        }
+      }
+      this.$store.commit('saveTodoList', this.todoList)
+    },
+    deleteAll () {
+      for (let i = 0;i < this.todoList.length; i++) {
+        if (this.todoList[i].did) {
+          this.todoList.splice(i,1);
+          i = -1;
+        }
+      }
+      this.$store.commit('saveTodoList', this.todoList)
+      this.popupVisible = !this.popupVisible;
+    },
+    popctrl () {
+      this.popupVisible = !this.popupVisible;
     }
   },
   computed: {
@@ -129,6 +173,7 @@ export default {
 @color1:rgb(0, 102, 255);
 .todo {
   display: flow-root;
+  overflow: hidden;
 }
 .cover {
   position: absolute;
@@ -147,9 +192,10 @@ export default {
   background: #eee;
   border-bottom: 1px solid #ddd;
   display: flow-root;
+  overflow: hidden;
   z-index: 301;
   &>div {
-    padding: 10px;
+    padding: 15px;
   }
   .default {
     color: @color1;
@@ -158,11 +204,13 @@ export default {
   .inputbox {
     background: #fff;
     z-index: 301;
+    font-size: 0.7rem;
     .input {
       margin-bottom: 10px;
     }
     input {
       display: inline-block;
+      padding: 10px;
       width: 100%;
       height: 30px;
       caret-color:@color1;
@@ -171,7 +219,6 @@ export default {
       display: flex;
       &>div {
         flex: 1;
-        font-size: 0.6rem;
       }
       .notice {
         color: @color1;
@@ -211,11 +258,11 @@ export default {
   .showdata {
     padding:0 10px; 
     li {
-      padding: 15px 0;
-      border-bottom: 1px solid #ddd;
       font-size: 0.7rem;
+      overflow: hidden;
     }
     .finish {
+      padding-top: 6px;
       li {
         color: #777;
         text-decoration: line-through ;
@@ -232,9 +279,48 @@ export default {
       }
     }
   }
+  .delete {
+    display: inline-block;
+    padding: 5px;
+  }
 }
 .text_right {
   text-align: right;
   color: #666;
+}
+.mint-cell {
+  background-color: inherit;
+  padding: 15px 0;
+  min-height: 0;
+}
+.mint-cell-wrapper {
+  background-image: none;
+}
+.popbox {
+  width: 10rem;
+  height: 100px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items:stretch;
+  p {
+    flex: 1;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 0.7rem;
+  }
+  .yesorno {
+    display: flex;
+    align-items: stretch;
+    span {
+     flex: 1;
+     border-top: 1px solid #eee;
+     color: @color1;
+     line-height: 35px;
+    }
+    span:first-child {
+       border-right: 1px solid #eee;
+     }
+  }
 }
 </style>

@@ -185,7 +185,7 @@ export default {
   .content {
     position: absolute;
     /*height: 100%;*/
-    top:52px;
+    top:4px;
     width: 100%;
     bottom: 46px;
   }

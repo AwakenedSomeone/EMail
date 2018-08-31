@@ -159,7 +159,7 @@ export default {
   position: absolute;
   width: 100%;
   overflow-y: auto;
-  top: 52px;
+  top: 5px;
   bottom: 0;
 }
 .scrollDiv {

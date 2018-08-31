@@ -14,8 +14,12 @@
    [
       "component",
       {
-        "libraryNamle": "element-ui",
+        "libraryName": "element-ui",
         "styleLibraryName": "theme-chalk"
+      },
+      {
+        "libraryName": "mint-ui",
+        "style": "true"
       }
     ]
   ]

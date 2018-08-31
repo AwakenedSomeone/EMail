@@ -12,7 +12,7 @@
         </div>
         <div class="tab-item" @click="change(1)">
           <router-link to="/todo">
-            <i class="icon" :class="isActive[1] ? 'el-icon-edit-outline':'el-icon-edit-outline'" aria-hidden="true"></i>代办
+            <i class="icon" :class="isActive[1] ? 'el-icon-edit-outline':'el-icon-edit-outline'" aria-hidden="true"></i>待办
           </router-link>
         </div>
         <div class="tab-item" @click="change(2)">
