@@ -2,9 +2,13 @@
   <div class="wrap">
     <el-container direction='vertical'>
       <el-header class="head">
-        <div class="left"><i class="icon-user-plus" aria-hidden="true" @click="hidefoot"></i></div>
+        <div class="left">
+        	<i class="icon-user-plus" aria-hidden="true" @click="hidefoot"></i>
+        </div>
         <div class="center" >通讯录</div>
-        <div class="right"><i class="el-icon-search" aria-hidden="true"></i></div>
+        <div class="right">
+        	<i class="el-icon-search" aria-hidden="true" @click="openSearch"></i>
+        </div>
       </el-header>
       <el-main>
         <div class="content" id="content">
@@ -30,6 +34,12 @@
     <transition name="slide">
       <editAddress   :flag="true" ref="edit"  class="details"  @save="addList"></editAddress>
     </transition>
+    <transition name="slideLeft">
+      <addressDetails :item="details" v-if="showAddress" class="details"></addressDetails>
+    </transition>
+    <transition name="slideLeft">
+    	<Search ref="search" :searchHander="toSearch"></Search>
+    </transition>
   </div>
 </template>
 
@@ -43,6 +53,8 @@ import {Container} from 'element-ui'
 import Details from '../details/details'
 import editAddress from '../editAddress/editAddress'
 import store from '../vuex/store.js'
+import addressDetails from '../addressDetails/addressDetails'
+import Search from '../search/search'
 
 Vue.use(Vueaxios, axios)
 Vue.use(Container)
@@ -53,9 +65,12 @@ export default {
       fullHeight: document.documentElement.clientHeight,
       showLetter: false,
       showLetterList: true,
+      showAddress: false,
       letter: '',
+      details: {},
       Letters: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '#'],
-      panelShow: false
+      panelShow: false,
+      search: true
     }
   },
   store,
@@ -97,7 +112,9 @@ export default {
       }
     },
     sendToParent (item) {
-      this.$emit('showAddress', item)
+      this.details = item
+      this.$emit('ifshow')
+      this.showAddress = true
     },
     hidefoot () {
       this.$refs.edit.show()
@@ -105,12 +122,23 @@ export default {
     },
     addList (item) {
       this.initData()
+    },
+    openSearch () {
+    	console.log(1)
+    	this.$refs.search.open()
+    },
+    toSearch (e) {
+    	if (e.keyCode == 13) {
+    		console.log(this.$refs.search.value)
+    	}
     }
   },
   components: {
     'scroll': scroll,
     'Details': Details,
-    'editAddress': editAddress
+    'editAddress': editAddress,
+    'addressDetails': addressDetails,
+    'Search': Search
   }
 }
 </script>
@@ -208,7 +236,7 @@ export default {
   vertical-align: middle;
 }
 .letterList {
-  position: absolute;
+  position: fixed;
   top: 50%;
   right: 0;
   transition: translateY(-50%);

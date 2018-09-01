@@ -8,7 +8,7 @@
       <div class="right">
         <div class="first">
           <!-- <i class="icon-filter " aria-hidden="true"></i> -->
-          <i class="icon-search" aria-hidden="true"></i>
+          <i class="icon-search" aria-hidden="true" @click="toSearch"></i>
           <i class="icon-plus" aria-hidden="true" ></i>
           <mt-popup v-model="popupVisible" position="bottom" popup-transition="popup-fade">
             <div class="popbox">
@@ -44,6 +44,9 @@
         <emailList :id="getId" @showDetails="get"></emailList>
       </keep-alive>
     </div>
+    <transition name="slideLeft">
+      <Search ref="search"></Search>
+    </transition>
   </div>
 </template>
 
@@ -53,6 +56,7 @@ import axios from 'axios'
 import Vueaxios from 'vue-axios'
 import emailList from '../emailList/emailList'
 import { Popup } from 'mint-ui'
+import Search from '../search/search'
 
 Vue.component(Popup.name, Popup)
 Vue.use(Vueaxios, axios)
@@ -85,7 +89,8 @@ export default {
     }
   },
   components: {
-    'emailList': emailList
+    'emailList': emailList,
+    'Search': Search
   },
   methods: {
     check (e, id) {
@@ -113,6 +118,9 @@ export default {
     showWrite () {
       this.popupVisible = true
       this.$root.eventHub.$emit('showcover')
+    },
+    toSearch () {
+      this.$refs.search.open()
     }
   }
 }

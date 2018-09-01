@@ -25,7 +25,6 @@ var mutations = {
   },
   setEditAddressList (state, data) {
     for (var i = 0; i < state.addressList.length; i++) {
-      console.log(state.addressList[i].id)
       if (state.addressList[i].id == data.id) {
         state.addressList[i] = data
       }

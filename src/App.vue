@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <keep-alive><!-- 使用keep-alive可以保存组件的状态，从其他组件返回时会回到离开之前组件的状态 -->
-      <router-view :info="info" @ifshow="showFoot" @showDetails="getDetails" @showAddress="getAddress"></router-view>
+      <router-view :info="info" @ifshow="showFoot" @showDetails="getDetails"></router-view>
     </keep-alive>
     <transition name="slideDown">
       <div class="foot-bar" v-if="show">
@@ -29,9 +29,6 @@
     </transition>
     <transition name="slideLeft">
       <mailDetails :mailitem="mailitem" v-if="showDetails" class="details" @back="back"></mailDetails>
-    </transition>
-    <transition name="slideLeft">
-      <addressDetails :item="addressitem" v-if="showAddress" class="details" @back="backforaddress"></addressDetails>
     </transition>
   </div>
 </template>
@@ -83,17 +80,12 @@ export default {
     },
     getDetails (item) {
       this.mailitem = item
+      this.showFoot()
       this.showDetails = true
     },
     getAddress (item, letter) {
       this.addressitem = item
       this.showAddress = true
-    },
-    back () {
-      this.showDetails = false
-    },
-    backforaddress () {
-      this.showAddress = false
     }
   },
   mounted () {
@@ -117,6 +109,7 @@ export default {
   height: 100%;
   margin:0 auto;
   position: relative;
+  background-color: #fff;
 }
 .foot-bar {
   position: fixed;
@@ -163,10 +156,11 @@ export default {
     transform: translateY(100%);
 }
 .details {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
+  height: 100%;
   bottom: 0;
   background-color: #fff;
   z-index: 999;

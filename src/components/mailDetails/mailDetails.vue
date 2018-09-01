@@ -41,7 +41,8 @@ export default {
   },
   methods: {
     back () {
-      this.$emit('back')
+      this.$parent.showDetails = false
+      this.$root.eventHub.$emit('ifshow')
     }
   },
   created () {

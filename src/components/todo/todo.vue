@@ -20,7 +20,7 @@
         <div class="inputbox" v-show="!flag">
           <div class="input"> <input type="text" v-model="todo" ref="input"/></div>
           <div class="operate">
-            <div class="notice"><i class="el-icon-bell"></i><span>添加提醒</span></div>
+            <div class="notice"><i class="el-icon-bell"></i><span @click="openPicker">{{notice}}</span></div>
             <div class="finish_button"><span :class="{change: ifchange}" @click="saveData">完成</span></div>
           </div>
         </div>
@@ -34,15 +34,16 @@
         <ul>
           <li v-for="(item,key) in todoList" v-bind:key="key" v-if="!item.did">
             <mt-cell-swipe
-              :title="item.text"
+            :title="item.text"
+            :label="item.date"
               :right="[
                 {
-                    content: '完成',
+                    content: '<span class=vertical_span>完成</span>',
                     style: { background: '#ccc', color: '#fff' },
                     handler:() => finished(key)
                   },
                   {
-                    content: '删除',
+                    content: '<span>删除</span>',
                     style: { background: 'red', color: '#fff' },
                     handler: () => deleted(key)
                   }
@@ -55,11 +56,12 @@
           <ul>
             <li v-for="(item,key) in todoList" v-bind:key="key" v-if="item.did">
               <mt-cell-swipe
-                :title="item.text"
+              	:title="item.text"
+            	:label="item.date"
                 :right="[
                 {
-                    content: '还原',
-                    style: { background: '#ccc', color: '#fff' },
+                    content: '<span>还原</span>',
+                    style: { background: '#ccc', color: '#fff'},
                     handler:() => reback(key)
                   },
                   {
@@ -74,6 +76,13 @@
         </div>
       </div>
     </div>
+    <mt-datetime-picker
+		  type="datetime"
+		  ref="picker"
+		  v-model="pickerValue"
+		  :startDate="startDate"
+		  @confirm="handleConfirm">
+	</mt-datetime-picker>
   </div>
 </template>
 
@@ -83,16 +92,22 @@ import store from '../vuex/store.js'
 import axios from 'axios'
 import Vueaxios from 'vue-axios'
 import {Icon} from 'element-ui'
+import moment from 'moment' // 格式化时间
 
+Vue.prototype.$moment = moment;//赋值使用
 Vue.use(Vueaxios, axios, Icon)
 export default {
   data () {
     return {
       flag: true,
       todo: '',
+      notice: '添加提醒',
+      date: '',
       focusStatus: true,
       todoList: [],
-      popupVisible: false
+      popupVisible: false,
+      pickerValue: null,
+      startDate: new Date()
     }
   },
   store,
@@ -111,13 +126,16 @@ export default {
       this.flag = true
       this.todoList.push({
         did: false,
-        text: this.todo
+        text: this.todo,
+        date: this.date
       })
       this.todo = ''
       this.$store.commit('saveTodoList', this.todoList)
+      this.notice = '添加提醒'
     },
     cancel () {
       this.flag = true
+      this.notice = '添加提醒'
     },
     deleted (index) {
        this.todoList.splice(index,1);
@@ -151,6 +169,15 @@ export default {
     },
     popctrl () {
       this.popupVisible = !this.popupVisible;
+    },
+    handleConfirm (value) {
+    	var date = this.$moment(value).format('M月DD日 hh:mm')
+    	this.notice = date
+    	this.date = date
+    },
+    openPicker () {
+    	this.pickerValue = new Date ()
+        this.$refs.picker.open();
     }
   },
   computed: {
@@ -321,6 +348,16 @@ export default {
     span:first-child {
        border-right: 1px solid #eee;
      }
+  }
+  .list {
+  	display: flex;
+  	flex-direction:column;
+  }
+  .vertical_span {
+  	width: 100%;
+  	height: 100%;
+  	display: flex;
+  	align-items:center;
   }
 }
 </style>

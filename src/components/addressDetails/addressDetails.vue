@@ -58,7 +58,9 @@ export default {
   store,
   methods: {
     backforaddress () {
-      this.$emit('back')
+      this.$parent.showAddress = false
+      this.$parent.initData()
+      this.$root.eventHub.$emit('ifshow')
     },
     show () {
       this.$refs.edit.show()
