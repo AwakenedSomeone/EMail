@@ -38,7 +38,11 @@
       <addressDetails :item="details" v-if="showAddress" class="details"></addressDetails>
     </transition>
     <transition name="slideLeft">
-    	<Search ref="search" :searchHander="toSearch"></Search>
+    	<Search ref="search" :searchHander="toSearch">
+    		<ul slot="content"><li v-for="(item, index) in target" v-bind:key="index">
+    			{{item.name}}
+    		</li></ul>
+    	</Search>
     </transition>
   </div>
 </template>
@@ -70,7 +74,8 @@ export default {
       details: {},
       Letters: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '#'],
       panelShow: false,
-      search: true
+      search: true,
+      target: []
     }
   },
   store,
@@ -128,9 +133,21 @@ export default {
     	this.$refs.search.open()
     },
     toSearch (e) {
-    	if (e.keyCode == 13) {
-    		console.log(this.$refs.search.value)
+    	var value = this.$refs.search.value
+    	var list = this.$store.state.addressList
+    	if (value !== undefined) {
+    		for (var  i= 0; i< list.length; i++) {
+    			if (list[i].name.indexOf(value) !== -1) {
+    				console.log(2)
+    				this.target.push(list[i])
+    			}
+    		}
     	}
+    	console.log(this.target)
+    	// if (e.keyCode == 13) {
+    	// 	alert(e.keyCode)
+    	// 	console.log()
+    	// }
     }
   },
   components: {
