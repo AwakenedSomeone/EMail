@@ -104,7 +104,12 @@ export default {
       notice: '添加提醒',
       date: '',
       focusStatus: true,
-      todoList: [],
+      todoList: [
+        {
+          did: false,
+          text: '左滑改变状态'
+        }
+      ],
       popupVisible: false,
       pickerValue: null,
       startDate: new Date()

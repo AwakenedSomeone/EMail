@@ -11,6 +11,7 @@
 		</div>
 		<div class="content">
 			<slot name="content">
+				敬请期待
 			</slot>
 		</div>
 
