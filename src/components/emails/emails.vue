@@ -14,7 +14,7 @@
             <div class="pop">
               <ul>
                 <li><i class="icon-quill"></i>写邮件</li>
-                <li><i class="icon-check-circle"></i>新建代办</li>
+                <li><i class="icon-check-circle"></i>新建待办</li>
                 <li><i class="icon-maximize"></i>扫一扫</li>
               </ul>
             </div>
