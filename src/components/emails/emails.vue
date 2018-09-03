@@ -11,7 +11,7 @@
           <i class="icon-search" aria-hidden="true" @click="toSearch"></i>
           <i class="icon-plus" aria-hidden="true" @click="showWrite"></i>
           <div class="popwindow" v-if="popupVisible">
-            <div class="popbox">
+            <div class="pop">
               <ul>
                 <li><i class="icon-quill"></i>写邮件</li>
                 <li><i class="icon-check-circle"></i>新建代办</li>
@@ -394,7 +394,7 @@ export default {
   background-color: rgba(0,0,0,0.3);
   z-index: 2;
 }
-  .popbox {
+  .pop {
     position: absolute;
     padding: 10px;
     background: #fff;
@@ -405,6 +405,9 @@ export default {
     li {
       padding: 5px;
       border-bottom: 1px solid #eee;
+    }
+    li:last-child {
+    	border-bottom: none;
     }
   }
 </style>
