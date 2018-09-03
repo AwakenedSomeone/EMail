@@ -3,15 +3,14 @@
 		<div class="head">
 			<div class="search_input">
 				<i class="el-icon-search"></i>
-				<input type="text" placeholder="搜索" v-model="value" v-on:keyup.enter="searchHander">
+				<input type="text" placeholder="搜索" v-model="value" v-on:keyup="searchHander">
 			</div>
 			<div class="search_buttn">
 				<label @click="cancel">{{buttonLabel}}</label>
 			</div>
 		</div>
-		<div class="content">
-			<slot name="content">
-				敬请期待
+		<div class="result">
+			<slot name="result">
 			</slot>
 		</div>
 
@@ -31,6 +30,7 @@ export default {
 	},
 	methods: {
 		open () {
+			this.value = ''
 			this.show = true
 		},
 		cancel () {

@@ -28,7 +28,7 @@
       </div>
     </transition>
     <transition name="slideLeft">
-      <mailDetails :mailitem="mailitem" v-if="showDetails" class="details" @back="back"></mailDetails>
+      <mailDetails :mailitem="mailitem" v-if="showDetails" class="details"></mailDetails>
     </transition>
   </div>
 </template>
@@ -94,6 +94,9 @@ export default {
     })
     this.$root.eventHub.$on('showcover', () => {
       this.showcover = !this.showcover
+    })
+    this.$root.eventHub.$on('showDetails', (item) => {
+      this.getDetails(item)
     })
   },
   components: {

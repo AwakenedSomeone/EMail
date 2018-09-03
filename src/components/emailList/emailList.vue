@@ -57,8 +57,6 @@ export default {
       axios.get(LocalAPI).then((res) => {
         if (this.id === '0') {
           this.emails = res.data.email.recept
-          this.$store.commit('receptList', res.data.email.recept)
-          // console.log(this.$store.state.receptList)
         } else if (this.id === '3') {
           this.emails = res.data.email.send
         } else {
@@ -136,7 +134,6 @@ export default {
 }
 .time {
   font-size: 0.6rem;
-  display: inline-block;
   float: right;
 }
 .noEmail {

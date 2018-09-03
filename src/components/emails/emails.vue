@@ -7,18 +7,19 @@
       </div>
       <div class="right">
         <div class="first">
-          <!-- <i class="icon-filter " aria-hidden="true"></i> -->
+          <i class="icon-filter1 " aria-hidden="true"></i>
           <i class="icon-search" aria-hidden="true" @click="toSearch"></i>
-          <i class="icon-plus" aria-hidden="true" ></i>
-          <mt-popup v-model="popupVisible" position="bottom" popup-transition="popup-fade">
+          <i class="icon-plus" aria-hidden="true" @click="showWrite"></i>
+          <div class="popwindow" v-if="popupVisible">
             <div class="popbox">
               <ul>
-                <li>写邮件</li>
-                <li>新建代办</li>
-                <li>扫一扫</li>
+                <li><i class="icon-quill"></i>写邮件</li>
+                <li><i class="icon-check-circle"></i>新建代办</li>
+                <li><i class="icon-maximize"></i>扫一扫</li>
               </ul>
             </div>
-          </mt-popup>
+            <div class="popcover" @click="showWrite"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -45,7 +46,21 @@
       </keep-alive>
     </div>
     <transition name="slideLeft">
-      <Search ref="search"></Search>
+      <Search ref="search" :searchHander="getSearch">
+        <div slot="result">
+          <div class="options">
+            <span :class="{active: checked}" @click="changeOption(1)">所有收件</span>
+            <span :class="{active: !checked}" @click="changeOption(0)">所有发件</span>
+          </div>
+          <ul class="resultList">
+            <li v-for="(item, index) in target" v-bind:key="index" @click="showDetails(item)">
+              <p>{{item.title}}</p>
+              <p>{{item.content}}</p>
+            </li>
+            <li v-show="noNum">没有找到</li>
+          </ul>
+        </div>
+      </Search>
     </transition>
   </div>
 </template>
@@ -57,7 +72,7 @@ import Vueaxios from 'vue-axios'
 import emailList from '../emailList/emailList'
 import { Popup } from 'mint-ui'
 import Search from '../search/search'
-
+import store from '../vuex/store.js'
 Vue.component(Popup.name, Popup)
 Vue.use(Vueaxios, axios)
 export default {
@@ -71,7 +86,10 @@ export default {
       typelist: null,
       type: '收件箱',
       id: '0',
-      popupVisible: false
+      popupVisible: false,
+      target: [],
+      noNum: false,
+      checked: true
     }
   },
   created () {
@@ -83,6 +101,10 @@ export default {
       alert(err)
     })
   },
+  store,
+  mounted () {
+    this.getData()
+  },
   computed: {
     getId () {
       return this.id
@@ -93,6 +115,17 @@ export default {
     'Search': Search
   },
   methods: {
+    getData () {
+      if (this.$store.state.receptList.length === 0) {
+        let LocalAPI = 'static/data.json'
+        axios.get(LocalAPI).then((res) => {
+          this.$store.commit('receptList', res.data.email.recept)
+          this.$store.commit('sendList', res.data.email.send)
+        }, (err) => {
+          alert(err)
+        })
+      }
+    },
     check (e, id) {
       if (this.id === id) {
         return
@@ -116,11 +149,49 @@ export default {
       this.$emit('showDetails', item)
     },
     showWrite () {
-      this.popupVisible = true
-      this.$root.eventHub.$emit('showcover')
+      this.popupVisible = !this.popupVisible
+      this.$root.eventHub.$emit('ifshow')
     },
     toSearch () {
+      this.target = []
       this.$refs.search.open()
+    },
+    getSearch () {
+      var value = this.$refs.search.value
+      var list
+      if (this.checked) {
+        list = this.$store.state.receptList
+      }
+      else {
+        list = this.$store.state.sendList
+      }
+      this.target = []
+    	if (value !== undefined && value != '') {
+    		for (var  i= 0; i< list.length; i++) {
+    			if (list[i].content != undefined && list[i].content.indexOf(value) !== -1) {
+    				this.target.push(list[i])
+          }
+          else if (list[i].title != undefined && list[i].title.indexOf(value) !== -1) {
+    				this.target.push(list[i])
+          }
+    		}
+    	}
+    	if (this.target.length === 0 && value != '') {
+        this.noNum = true
+      } else {
+        this.noNum = false
+      }
+    },
+    showDetails (item) {
+      this.$root.eventHub.$emit('showDetails', item)
+      this.$refs.search.cancel()
+    },
+    changeOption (flag) {
+      if (flag == this.checked) {
+        return
+      }
+      this.checked = !this.checked
+      this.getSearch()
     }
   }
 }
@@ -278,13 +349,62 @@ export default {
   .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
     opacity: 0;
   }
-  .popbox {
+.options {
+  width: 100%;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  color: #1E90FF;
+  span {
+    flex: 1;
+    text-align: center;
     padding: 10px;
-    width: 100px;
+    border: 1px solid #1E90FF;
+  }
+  span:last-child {
+    border-left: none;
+  }
+  span.active {
+    background-color: #1E90FF;
+    color: #fff;
+  }
+}
+.resultList {
+  width: 100%;
+  li {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 0.7rem;
+    border-bottom: 1px solid #eee;
+    color: #555;
+  }
+}
+
+
+//自定义弹框
+.popcover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.3);
+  z-index: 2;
+}
+  .popbox {
+    position: absolute;
+    padding: 10px;
     background: #fff;
-    z-index: 1000;
+    z-index: 3;
+    right: 20px;
+    border-radius: 5px;
+    font-size: 0.7rem;
     li {
       padding: 5px;
+      border-bottom: 1px solid #eee;
     }
   }
 </style>

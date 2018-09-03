@@ -17,7 +17,7 @@
               <yd-cell-item v-for="i in item.data" v-bind:key="i.id"  style="padding: 10px 0 10px 5px" >
                 <img slot="left" :src="i.avatar" width="30" height="30" style="border-radius: 15px" v-if="i.avatar">
                 <span slot="left" class="default" width="30" height="30" v-show="!i.avatar">{{!i.nickname?i.name.slice(0,1):i.nickname.slice(0,1)}}</span>
-                <div slot="left" style="margin: 10px;justify-content: flex-start;width: 10rem;" @click="sendToParent(i, item.letter)">
+                <div slot="left" style="margin: 10px;justify-content: flex-start;width: 10rem;" @click="sendToParent(i)">
                   <p class="name">{{i.nickname}}</p>
                   <p class="mailtitle">{{!i.nickname?i.name:''}}</p>
                 </div>
@@ -39,9 +39,13 @@
     </transition>
     <transition name="slideLeft">
     	<Search ref="search" :searchHander="toSearch">
-    		<ul slot="content"><li v-for="(item, index) in target" v-bind:key="index">
-    			{{item.name}}
-    		</li></ul>
+    		<ul slot="result" class="resultList">
+          <li v-for="(item, index) in target" v-bind:key="index" @click="sendToParent(item)">
+    			  <p>{{item.nickname}}</p>
+            <p> {{item.name}}</p>
+    		  </li>
+          <li v-show="noNum">无匹配联系人</li>
+        </ul>
     	</Search>
     </transition>
   </div>
@@ -75,7 +79,8 @@ export default {
       Letters: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '#'],
       panelShow: false,
       search: true,
-      target: []
+      target: [],
+      noNum: false
     }
   },
   store,
@@ -120,6 +125,7 @@ export default {
       this.details = item
       this.$emit('ifshow')
       this.showAddress = true
+      this.$refs.search.cancel()
     },
     hidefoot () {
       this.$refs.edit.show()
@@ -129,25 +135,31 @@ export default {
       this.initData()
     },
     openSearch () {
-    	console.log(1)
+      this.target = []
     	this.$refs.search.open()
     },
     toSearch (e) {
     	var value = this.$refs.search.value
-    	var list = this.$store.state.addressList
-    	if (value !== undefined) {
+      var list = this.$store.state.addressList
+      this.target = []
+      console.log(value)
+    	if (value !== undefined && value != '') {
     		for (var  i= 0; i< list.length; i++) {
-    			if (list[i].name.indexOf(value) !== -1) {
+    			if (list[i].name != undefined && list[i].name.indexOf(value) !== -1) {
+    				console.log(1)
+    				this.target.push(list[i])
+          }
+          else if (list[i].nickname != undefined && list[i].nickname.indexOf(value) !== -1) {
     				console.log(2)
     				this.target.push(list[i])
-    			}
+          }
     		}
     	}
-    	console.log(this.target)
-    	// if (e.keyCode == 13) {
-    	// 	alert(e.keyCode)
-    	// 	console.log()
-    	// }
+    	if (this.target.length === 0 && value != '') {
+        this.noNum = true
+      } else {
+        this.noNum = false
+      }
     }
   },
   components: {
@@ -160,7 +172,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet" scoped>
+<style rel="stylesheet" lang="less" scoped>
 .wrap {
   width: 100%;
   position: absolute;
@@ -267,5 +279,15 @@ export default {
 }
 .name, .mailtitle{
   font-size: 0.75rem;
+}
+.resultList {
+  width: 100%;
+  li {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 0.7rem;
+    border-bottom: 1px solid #eee;
+    color: #555;
+  }
 }
 </style>
