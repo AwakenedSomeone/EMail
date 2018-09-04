@@ -88,7 +88,7 @@ export default {
 <style lang="less">
 #filter {
     position: absolute;
-    top: 42px;
+    top: 5px;
     width: 100%;
     height: 100%;
     background: #fff;
