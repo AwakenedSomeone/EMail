@@ -7,14 +7,14 @@
       </div>
       <div class="right">
         <div class="first">
-          <i class="icon-filter1 " aria-hidden="true"></i>
+          <i class="icon-filter1 " aria-hidden="true" @click="filter" :class="{active: !emailListshow}"></i>
           <i class="icon-search" aria-hidden="true" @click="toSearch"></i>
           <i class="icon-plus" aria-hidden="true" @click="showWrite"></i>
           <div class="popwindow" v-if="popupVisible">
-            <div class="popbox">
-              <ul>
+            <div class="pop">
+              <ul class="editList">
                 <li><i class="icon-quill"></i>写邮件</li>
-                <li><i class="icon-check-circle"></i>新建代办</li>
+                <li><i class="icon-check-circle"></i>新建待办</li>
                 <li><i class="icon-maximize"></i>扫一扫</li>
               </ul>
             </div>
@@ -37,13 +37,16 @@
           </ul>
           <div class="dividing"></div>
           <ul class="items" id="typelist">
-            <li @click="check($event,item.id);show = !show;send()"  v-for="(item, index) in typelist" :key="item.id" :class="checked == index? 'active':''"><i :class="item.iconClass" ></i><span >{{item.text}}</span></li>
+            <li @click="check($event,item.id);show = !show;send()"  v-for="(item, index) in typelist" :key="item.id" :class="selected == index? 'active':''"><i :class="item.iconClass" ></i><span >{{item.text}}</span></li>
           </ul>
         </div>
       </transition>
       <keep-alive>
-        <emailList :id="getId" @showDetails="get"></emailList>
+        <emailList :emails="targetItem" v-if="emailListshow"></emailList>
       </keep-alive>
+      <transition>
+        <filt ref="filt"></filt>
+      </transition>
     </div>
     <transition name="slideLeft">
       <Search ref="search" :searchHander="getSearch">
@@ -73,6 +76,8 @@ import emailList from '../emailList/emailList'
 import { Popup } from 'mint-ui'
 import Search from '../search/search'
 import store from '../vuex/store.js'
+import filt from '../filter/filter'
+
 Vue.component(Popup.name, Popup)
 Vue.use(Vueaxios, axios)
 export default {
@@ -82,14 +87,16 @@ export default {
   data () {
     return {
       show: false,
-      checked: 0,
+      selected: 0,
       typelist: null,
       type: '收件箱',
       id: '0',
       popupVisible: false,
       target: [],
       noNum: false,
-      checked: true
+      checked: true,
+      emailListshow: true,
+      targetItem: []
     }
   },
   created () {
@@ -103,27 +110,28 @@ export default {
   },
   store,
   mounted () {
-    this.getData()
+    this.getMails()
   },
   computed: {
-    getId () {
-      return this.id
-    }
   },
   components: {
     'emailList': emailList,
-    'Search': Search
+    'Search': Search,
+    'filt': filt
   },
   methods: {
-    getData () {
+    getMails () {
       if (this.$store.state.receptList.length === 0) {
         let LocalAPI = 'static/data.json'
         axios.get(LocalAPI).then((res) => {
           this.$store.commit('receptList', res.data.email.recept)
           this.$store.commit('sendList', res.data.email.send)
+          this.getData()
         }, (err) => {
           alert(err)
         })
+      } else {
+         this.getData()
       }
     },
     check (e, id) {
@@ -134,19 +142,33 @@ export default {
       var others = dom.parentNode.getElementsByTagName('li')
       for (var i = 0; i < others.length; i++) {
         if (dom === others[i]) {
-          this.checked = i
+          this.selected = i
         }
         others[i].classList.remove('active')
       }
       dom.classList.add('active')
       this.type = dom.innerText
       this.id = id
+      this.getMails()
+    },
+    getData () {
+      var id = this.id
+      this.targetItem = []
+      if (id === '0') {
+          this.targetItem = this.$store.state.receptList
+        } else if (id === '3') {
+          this.targetItem = this.$store.state.sendList
+        } else {
+          let data = this.$store.state.receptList
+          for (let i = 0; i < data.length; i++) {
+            if (data[i].type === id) {
+              this.targetItem.push(data[i])
+            }
+          }
+        }
     },
     send () {
       this.$emit('ifshow')
-    },
-    get (item) {
-      this.$emit('showDetails', item)
     },
     showWrite () {
       this.popupVisible = !this.popupVisible
@@ -192,6 +214,10 @@ export default {
       }
       this.checked = !this.checked
       this.getSearch()
+    },
+    filter () {
+      this.emailListshow = !this.emailListshow
+      this.$refs.filt.open()
     }
   }
 }
@@ -252,6 +278,8 @@ export default {
   }
   .right {
     display: flex;
+    box-sizing:  border-box;
+    padding: 8px;
   }
   .right i {
     display: inline-block;
@@ -260,6 +288,11 @@ export default {
     color: #696969;
     vertical-align: middle;
     font-size: 0.77rem;
+  }
+  .right i.active {
+    background: #1E90FF;
+    color: #fff;
+    border-radius: 4px;
   }
   .content {
     position: absolute;
@@ -394,7 +427,7 @@ export default {
   background-color: rgba(0,0,0,0.3);
   z-index: 2;
 }
-  .popbox {
+  .pop {
     position: absolute;
     padding: 10px;
     background: #fff;
@@ -402,9 +435,12 @@ export default {
     right: 20px;
     border-radius: 5px;
     font-size: 0.7rem;
-    li {
+    .editList li {
       padding: 5px;
       border-bottom: 1px solid #eee;
+    }
+    .editList li:last-child {
+      border-bottom: none;
     }
   }
 </style>

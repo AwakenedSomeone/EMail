@@ -13,7 +13,7 @@
               <img :src="item.avatar">
             </div>
             <div class="messages">
-              <p class="name">{{item.nickname}}</p>
+              <p class="name">{{item.nickname}} <i class="read_flag" v-if="item.readstate ==0 && item.type != 3"></i></p>
               <p class="mailtitle">{{item.title}}</p>
               <p class="word"><span class="text">{{item.content}}</span> <span class="time">{{item.time}}</span></p>
             </div>
@@ -34,45 +34,21 @@ import store from '../vuex/store.js'
 
 Vue.use(Vueaxios, axios)
 export default {
-  props: {
-    id: String
-  },
+  props: ['emails'],
   data () {
     return {
-      emails: [],
       pulldown: true,
       pullup: true,
       loading: false
     }
   },
-  watch: {
-    id: 'getMails'
-  },
   store,
   methods: {
-    getMails (loaded) {
-      this.laoding = true
-      this.emails = []
-      let LocalAPI = 'static/data.json'
-      axios.get(LocalAPI).then((res) => {
-        if (this.id === '0') {
-          this.emails = res.data.email.recept
-        } else if (this.id === '3') {
-          this.emails = res.data.email.send
-        } else {
-          let data = res.data.email.recept
-          for (let i = 0; i < data.length; i++) {
-            if (data[i].type === this.id) {
-              this.emails.push(data[i])
-            }
-          }
-        }
-      }, (err) => {
-        alert(err)
-      })
+    getMails () {
+      this.$parent.getMails()
     },
     send (item) {
-      this.$emit('showDetails', item)
+      this.$root.eventHub.$emit('showDetails', item)
     }
   },
   created () {
@@ -142,5 +118,12 @@ export default {
   left: 50%;
   transform: translate(-50%,-50%);
   font-size: 0.8rem;
+}
+.read_flag {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #1E90FF;
 }
 </style>

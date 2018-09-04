@@ -42,14 +42,7 @@ export default {
   data () {
     return {
       showEdit: false,
-      addressitem: this.item,
-      otherItem: {
-        'company': null,
-        'department': null,
-        'position': null,
-        'phone': null,
-        'local': null
-      }
+      addressitem: this.item
     }
   },
   props: {

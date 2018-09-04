@@ -33,7 +33,8 @@ Vue.use(Icon)
 export default {
   data () {
     return {
-      color: '#DCDCDC'
+      color: '#DCDCDC',
+      cpitem: this.mailitem
     }
   },
   props: {
@@ -46,7 +47,10 @@ export default {
     }
   },
   created () {
-    console.log(this.mailitem)
+    console.log(this.cpitem.type)
+    if (this.cpitem.type !== '3') {
+      this.cpitem.readstate = 1
+    }
   },
   components: {
     'Details': Details
