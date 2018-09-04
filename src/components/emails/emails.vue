@@ -439,13 +439,8 @@ export default {
       padding: 5px;
       border-bottom: 1px solid #eee;
     }
-<<<<<<< HEAD
     .editList li:last-child {
       border-bottom: none;
-=======
-    li:last-child {
-    	border-bottom: none;
->>>>>>> 0619b6d77d8b350ca6601cebfac489966cff9573
     }
   }
 </style>
