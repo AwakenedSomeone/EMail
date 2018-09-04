@@ -131,7 +131,7 @@ export default {
           alert(err)
         })
       } else {
-         this.getData()
+        this.getData()
       }
     },
     check (e, id) {
