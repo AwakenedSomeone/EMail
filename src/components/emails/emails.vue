@@ -2,7 +2,7 @@
   <div class="wrap">
     <div class="head">
       <div class="left">
-        <div class="bars" @click="show = !show;send()"><i class="icon-bars icon" aria-hidden="true"></i></div>
+        <div class="bars" @click="show = !show;showFoot()"><i class="icon-bars icon" aria-hidden="true"></i></div>
         <div class="title"><span class="type">{{type}}</span><span class="user">{{info.user.name}}</span></div>
       </div>
       <div class="right">
@@ -13,8 +13,14 @@
           <div class="popwindow" v-if="popupVisible">
             <div class="pop">
               <ul class="editList">
-                <li><i class="icon-quill"></i>写邮件</li>
-                <li><i class="icon-check-circle"></i>新建待办</li>
+                <li @click="toSendEmail">
+                  <i class="icon-quill"></i>写邮件
+                </li>
+                <li @click="changePop">
+                  <router-link to="/todo">
+                    <i class="icon-check-circle"></i>新建待办
+                  </router-link>
+                </li>
                 <li><i class="icon-maximize"></i>扫一扫</li>
               </ul>
             </div>
@@ -24,7 +30,7 @@
       </div>
     </div>
     <transition name="fade">
-      <div class="left-wrap" v-if="show" @click="show = !show;send()">
+      <div class="left-wrap" v-if="show" @click="show = !show;showFoot()">
         <div class="cover"></div>
       </div>
     </transition>
@@ -37,7 +43,7 @@
           </ul>
           <div class="dividing"></div>
           <ul class="items" id="typelist">
-            <li @click="check($event,item.id);show = !show;send()"  v-for="(item, index) in typelist" :key="item.id" :class="selected == index? 'active':''"><i :class="item.iconClass" ></i><span >{{item.text}}</span></li>
+            <li @click="check($event,item.id);show = !show;showFoot()"  v-for="(item, index) in typelist" :key="item.id" :class="selected == index? 'active':''"><i :class="item.iconClass" ></i><span >{{item.text}}</span></li>
           </ul>
         </div>
       </transition>
@@ -167,7 +173,7 @@ export default {
           }
         }
     },
-    send () {
+    showFoot () {
       this.$emit('ifshow')
     },
     showWrite () {
@@ -218,6 +224,13 @@ export default {
     filter () {
       this.emailListshow = !this.emailListshow
       this.$refs.filt.open()
+    },
+    changePop () {
+      this.showFoot()
+      this.popupVisible = !this.popupVisible
+    },
+    toSendEmail () {
+      alert('敬请期待!')
     }
   }
 }

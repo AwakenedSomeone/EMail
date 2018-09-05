@@ -65,7 +65,7 @@
                     handler:() => reback(key)
                   },
                   {
-                    content: '删除',
+                    content: '<span>删除</span>',
                     style: { background: 'red', color: '#fff' },
                     handler: () => deleted(key)
                   }
@@ -327,6 +327,12 @@ export default {
 }
 .mint-cell-wrapper {
   background-image: none;
+}
+//解决左滑时，右边按钮的文字居中问题
+.mint-cell-swipe-button span{
+  display:flex;
+  height: 100%;
+  align-items: center;
 }
 .popbox {
   width: 10rem;
